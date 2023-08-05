@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let currentSlide = 0;
     
     const slideContainer = d3.select("#slide-container");
+    const startButton = document.getElementById('start');
     
     function updateSlide() {
         const slide = slideData[currentSlide];
@@ -15,6 +16,12 @@ document.addEventListener("DOMContentLoaded", function() {
             <h2>${slide.title}</h2>
             <p>${slide.content}</p>
         `);
+        
+        if(currentSlide === slideData.length - 1) {
+            startButton.style.display = 'inline';
+        } else {
+            startButton.style.display = 'none';
+        }
     }
     
     updateSlide();
