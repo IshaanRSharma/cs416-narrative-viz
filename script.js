@@ -59,11 +59,12 @@ function preprocessData(rawData) {
         d => d.Sex, 
         d => d.Diabetes_012
     );
+    console.log(groupedData)
     return groupedData;
 }
 
-function renderScene1(data) {
-    const filted_data = preprocessData(data);
+function renderScene1(raw_data) {
+    const data = preprocessData(raw_data);
     const svg = d3.select("#slide-container svg");
 
     const width = 800;
