@@ -44,7 +44,6 @@ function clearScene() {
 
 function renderScene() {
     clearScene();
-    printAges();
     loadData().then(data => {
         scenes[currentScene](data);
     });
@@ -72,6 +71,7 @@ function renderScene1(data) {
             prevalence: diabetic / bin.length
         };
     });
+    console.log(diabetesCounts)
 
 
     const colorScale = d3.scaleSequential(d3.interpolateBlues)
