@@ -1,5 +1,6 @@
 let currentScene = 0;
 const scenes = [renderScene1, renderScene2, renderScene3];  
+const ageBins = ["0-20", "20-40", "40-60", "60-80", "80-100"];
 
 
 window.onload = renderScene;
@@ -72,9 +73,9 @@ function renderScene1(raw_data) {
 
     // Scales
     const xScale = d3.scaleBand()
-        .domain(data.map(d => d[0]))  // Age groups
-        .range([margin.left, width - margin.right])
-        .padding(0.1);
+    .domain(ageBins)
+    .range([margin.left, width - margin.right])
+    .padding(0.1);
 
     const yScale = d3.scaleLinear()
         .domain([0, d3.max(data, d => d[1].reduce((acc, curr) => acc + curr[1], 0))])
