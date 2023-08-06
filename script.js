@@ -48,29 +48,40 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function renderD3Visualization() {
         // Load the CSV file using D3
-d3.csv("Data/data.csv").then(function(data) {
-    console.log(data); // You can log the data to the console to check if it's loaded correctly
-
-    // Parse the values as numbers (important if your CSV values are strings)
-    data.forEach(d => {
-        d.value = +d.value;
-    });
-
-    // Display the data
-    let svg = d3.select("body")
-        .append("svg")
-        .attr("width", 500)
-        .attr("height", 500);
-
-    svg.selectAll("circle")
-        .data(data)
-        .enter()
-        .append("circle")
-        .attr("cx", (d, i) => (i + 1) * 100) // Spacing circles horizontally
-        .attr("cy", d => 250 - d.value)     // Adjusting circle vertical position based on data
-        .attr("r", d => d.value/2)          // Circle radius based on data
-        .attr("fill", "steelblue");
-});
+        d3.csv("Data/data.csv").then(function(data) {
+            console.log(data);  // You can log the data to the console to check if it's loaded correctly
+        
+            // Parse the values as numbers (important if your CSV values are strings)
+            data.forEach(d => {
+                d.value = +d.value;
+            });
+        
+            // Append a table to the body (or any other container)
+            let table = d3.select("body").append("table");
+            
+            // Create table header
+            let thead = table.append("thead");
+            thead.append("tr")
+                .selectAll("th")
+                .data(Object.keys(data[0])) // Assuming all rows have the same columns
+                .enter().append("th")
+                .text(function(d) { return d; });
+        
+            // Create table body
+            let tbody = table.append("tbody");
+        
+            // Add rows for each data entry
+            tbody.selectAll("tr")
+                .data(data)
+                .enter().append("tr")
+                .selectAll("td")
+                .data(function(d) {
+                    return Object.values(d);
+                })
+                .enter().append("td")
+                .text(function(d) { return d; });
+        });
+        
 
     }
 });
