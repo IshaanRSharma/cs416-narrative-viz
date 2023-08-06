@@ -56,30 +56,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 d.value = +d.value;
             });
         
-            // Append a table to the body (or any other container)
-            let table = d3.select("body").append("table");
-            
-            // Create table header
-            let thead = table.append("thead");
-            thead.append("tr")
-                .selectAll("th")
-                .data(Object.keys(data[0])) // Assuming all rows have the same columns
-                .enter().append("th")
-                .text(function(d) { return d; });
-        
-            // Create table body
-            let tbody = table.append("tbody");
-        
-            // Add rows for each data entry
-            tbody.selectAll("tr")
-                .data(data)
-                .enter().append("tr")
-                .selectAll("td")
-                .data(function(d) {
-                    return Object.values(d);
-                })
-                .enter().append("td")
-                .text(function(d) { return d; });
         });
         
 
