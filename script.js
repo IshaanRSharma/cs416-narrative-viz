@@ -48,10 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function renderD3Visualization() {
         // Load the CSV file using D3
-        d3.csv("Data/data.csv").then(function(data) {
-            console.log(data);  // You can log the data to the console to check if it's loaded correctly
-        
-        });
+  
         
 
     }
