@@ -51,7 +51,7 @@ function renderScene() {
 }
 
 function preprocessData(rawData) {
-    const filteredData = rawData.filter(d => d.Diabetes_012 !== null && d.Sex !== null && d.Age !== null);
+    const filteredData = rawData.filter(d => !isNaN(d.Diabetes_012) && !isNaN(d.Sex) && !isNaN(d.Age));
     const groupedData = d3.rollups(
         filteredData, 
         v => v.length, 
@@ -62,7 +62,6 @@ function preprocessData(rawData) {
     console.log(groupedData)
     return groupedData;
 }
-
 function renderScene1(raw_data) {
     const data = preprocessData(raw_data);
     const svg = d3.select("#slide-container svg");
