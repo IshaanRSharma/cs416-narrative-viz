@@ -1,7 +1,7 @@
 
 #slide-container {
-    width: 1000px;
-    height: 500px;
+    width: 700px;
+    height: 300px;
     border: 5px solid black;
     margin: 10px;
     padding: 10px;
@@ -14,7 +14,7 @@ button {
 body {
     font-family: Arial, sans-serif;
     text-align: center;  /* Center the text globally for the entire page. */
-    display: block;       /* Set body as a flex container */
+    display: flex;       /* Set body as a flex container */
     flex-direction: column;  /* Items are stacked vertically */
     justify-content: center; /* Center items horizontally */
     align-items: center;     /* Center items vertically */
