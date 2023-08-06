@@ -50,58 +50,83 @@ function renderScene() {
 
 }
 
+function preprocessData(rawData) {
+    const filteredData = rawData.filter(d => d.Diabetes_012 !== null && d.Sex !== null && d.Age !== null);
+    const groupedData = d3.rollups(
+        filteredData, 
+        v => v.length, 
+        d => d.Age, 
+        d => d.Sex, 
+        d => d.Diabetes_012
+    );
+    return groupedData;
+}
+
 function renderScene1(data) {
+    const filted_data = preprocessData(data);
     const svg = d3.select("#slide-container svg");
-    const width = +svg.attr("width");
-    const height = +svg.attr("height");
 
-  
-    const ageBins = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]; // e.g., 0-10, 10-20, etc.
+    const width = 800;
+    const height = 400;
+    const margin = {top: 20, right: 20, bottom: 40, left: 50};
 
-    const binnedData = d3.bin()
-        .domain([0, 100])  // Assuming age ranges from 0 to 100
-        .thresholds(ageBins)
-        (data.map(d => d.Age));
+    // Scales
+    const xScale = d3.scaleBand()
+        .domain(data.map(d => d[0]))  // Age groups
+        .range([margin.left, width - margin.right])
+        .padding(0.1);
 
+    const yScale = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d[1].reduce((acc, curr) => acc + curr[1], 0))])
+        .range([height - margin.bottom, margin.top]);
 
-    const diabetesCounts = binnedData.map(bin => {
-        const diabetic = d3.sum(bin, d => d.Diabetes_012 === 1);
-        return {
-            ageRange: [bin.x0, bin.x1],
-            prevalence: diabetic / bin.length
-        };
-    });
-    console.log(diabetesCounts)
+    const colorScale = d3.scaleOrdinal()
+        .domain(['Male', 'Female'])
+        .range(['#1f77b4', '#ff7f0e']); // blue and orange
 
+    svg.append("g")
+        .attr("transform", `translate(0,${height - margin.bottom})`)
+        .call(d3.axisBottom(xScale).tickSizeOuter(0));
 
-    const colorScale = d3.scaleSequential(d3.interpolateBlues)
-        .domain([0, d3.max(diabetesCounts, d => d.prevalence)]);
+    svg.append("g")
+        .attr("transform", `translate(${margin.left},0)`)
+        .call(d3.axisLeft(yScale));
 
+    svg.selectAll(".barGroup")
+        .data(data)
+        .join("g")
+        .attr("class", "barGroup")
+        .attr("transform", d => `translate(${xScale(d[0])},0)`)
+        .selectAll("rect")
+        .data(d => d[1])
+        .join("rect")
+        .attr("width", xScale.bandwidth())
+        .attr("y", d => yScale(d[1]))
+        .attr("height", d => height - margin.bottom - yScale(d[1]))
+        .attr("fill", d => colorScale(d[0]));
 
-    const yScale = d3.scaleBand()
-        .domain(ageBins.slice(0, -1).map(d => `${d}-${d+10}`))
-        .range([0, height]);
-
-
-    svg.selectAll('rect')
-        .data(diabetesCounts)
-        .enter().append('rect')
-        .attr('y', d => yScale(`${d.ageRange[0]}-${d.ageRange[1]}`))
-        .attr('height', yScale.bandwidth())
-        .attr('width', width)
-        .attr('fill', d => colorScale(d.prevalence))
+        const tooltip = d3.select("#tooltip");
+        svg.selectAll(".barGroup rect")
         .on("mouseover", function(event, d) {
-            d3.select(this).attr('stroke', 'black');
-            svg.append('text')
-                .attr('id', 'tooltip')
-                .attr('x', width / 2)
-                .attr('y', height / 2)
-                .attr('text-anchor', 'middle')
-                .text(`Age: ${d.ageRange[0]}-${d.ageRange[1]}, Prevalence: ${d.prevalence.toFixed(2)}`);
+            d3.select(this).attr("opacity", 0.7);
+
+            const ageGroup = d[0];
+            const sex = d[1][0];
+            const count = d[1][1];
+            const totalCount = d3.sum(rawData, row => +row.Age === ageGroup && row.Sex === sex);
+            const percentage = (count / totalCount) * 100;
+
+            tooltip.html(`Age: ${ageGroup}<br>Sex: ${sex}<br>Percentage: ${percentage.toFixed(2)}%`)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 28) + "px")
+                .style("visibility", "visible")
+                .style("background-color", "white")
+                .style("padding", "5px")
+                .style("border", "1px solid black");
         })
-        .on("mouseout", function() {
-            d3.select(this).attr('stroke', null);
-            svg.select('#tooltip').remove();
+        .on("mouseout", function(event, d) {
+            d3.select(this).attr("opacity", 1);
+            tooltip.style("visibility", "hidden");
         });
 }
 
