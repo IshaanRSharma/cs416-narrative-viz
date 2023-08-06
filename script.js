@@ -45,21 +45,67 @@ function clearScene() {
 function renderScene() {
     clearScene();
     printAges();
-    scenes[currentScene]();
+    loadData().then(data => {
+        scenes[currentScene](data);
+    });
+
 }
 
-function renderScene1() {
+function renderScene1(data) {
     const svg = d3.select("#slide-container svg");
-    // D3 code for the first scene.
-    svg.append("rect")
-       .attr("x", 50)
-       .attr("y", 50)
-       .attr("width", 200)
-       .attr("height", 100)
-       .attr("fill", "#FFD700");
+    const width = +svg.attr("width");
+    const height = +svg.attr("height");
+
+  
+    const ageBins = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]; // e.g., 0-10, 10-20, etc.
+
+    const binnedData = d3.bin()
+        .domain([0, 100])  // Assuming age ranges from 0 to 100
+        .thresholds(ageBins)
+        (data.map(d => d.Age));
+
+
+    const diabetesCounts = binnedData.map(bin => {
+        const diabetic = d3.sum(bin, d => d.Diabetes_012 === 1);
+        return {
+            ageRange: [bin.x0, bin.x1],
+            prevalence: diabetic / bin.length
+        };
+    });
+
+
+    const colorScale = d3.scaleSequential(d3.interpolateBlues)
+        .domain([0, d3.max(diabetesCounts, d => d.prevalence)]);
+
+
+    const yScale = d3.scaleBand()
+        .domain(ageBins.slice(0, -1).map(d => `${d}-${d+10}`))
+        .range([0, height]);
+
+
+    svg.selectAll('rect')
+        .data(diabetesCounts)
+        .enter().append('rect')
+        .attr('y', d => yScale(`${d.ageRange[0]}-${d.ageRange[1]}`))
+        .attr('height', yScale.bandwidth())
+        .attr('width', width)
+        .attr('fill', d => colorScale(d.prevalence))
+        .on("mouseover", function(event, d) {
+            d3.select(this).attr('stroke', 'black');
+            svg.append('text')
+                .attr('id', 'tooltip')
+                .attr('x', width / 2)
+                .attr('y', height / 2)
+                .attr('text-anchor', 'middle')
+                .text(`Age: ${d.ageRange[0]}-${d.ageRange[1]}, Prevalence: ${d.prevalence.toFixed(2)}`);
+        })
+        .on("mouseout", function() {
+            d3.select(this).attr('stroke', null);
+            svg.select('#tooltip').remove();
+        });
 }
 
-function renderScene2() {
+function renderScene2(data) {
     const svg = d3.select("#slide-container svg");
     // D3 code for the second scene.
     svg.append("circle")
@@ -69,7 +115,7 @@ function renderScene2() {
        .attr("fill", "#4CAF50");
 }
 
-function renderScene3() {
+function renderScene3(data) {
     const svg = d3.select("#slide-container svg");
     // D3 code for the third scene.
     svg.append("ellipse")
@@ -86,5 +132,10 @@ function printAges() {
             console.log(d.Age);
         });
     });
+}
+
+async function loadData() {
+    const data = await d3.csv("Data/data.csv");
+    return data;
 }
 
