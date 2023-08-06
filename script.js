@@ -51,11 +51,6 @@ document.addEventListener("DOMContentLoaded", function() {
         d3.csv("Data/data.csv").then(function(data) {
             console.log(data);  // You can log the data to the console to check if it's loaded correctly
         
-            // Parse the values as numbers (important if your CSV values are strings)
-            data.forEach(d => {
-                d.value = +d.value;
-            });
-        
         });
         
 
