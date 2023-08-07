@@ -276,7 +276,7 @@ if (d.averageValence === maxValenceData.genre) {
     console.log(annotations);  
 }
 
-        if (d === maxTempoData) {
+        if (d.averageTempo === maxTempoData) {
             // Show tempo annotation
             console.log(d)
             svg.append("g")
