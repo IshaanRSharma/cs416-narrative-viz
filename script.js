@@ -253,6 +253,7 @@ function renderScene2(raw_data) {
         dy: -50,
         dx: 50
     }];
+    d3.select("#tooltip").remove();
 
     const makeAnnotations = annotation()
         .annotations(annotations);
