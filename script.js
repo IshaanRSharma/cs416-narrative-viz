@@ -250,7 +250,7 @@ function renderScene2(raw_data) {
                     dx: 50
                 }];
             
-                svg.append("g")
+                chartGroup.append("g")
                    .attr("class", "valence-annotation")
                    .call(d3.annotation().annotations(annotations));
             }
