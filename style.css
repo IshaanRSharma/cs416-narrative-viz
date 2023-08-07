@@ -33,9 +33,7 @@ body {
     text-align: justify;  /* Justifies the paragraph content for better alignment */
 }
 
-#text-container {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 20px;  
+#song-container {
+    width: 1000px;
+    height: 1000px;
 }
-

@@ -8,6 +8,7 @@ window.onload = renderScene;
 document.getElementById('previous').style.display = 'none'; 
 
 document.getElementById('next').addEventListener('click', function() {
+    clearScene3Content()
     if (currentScene === scenes.length - 1) {
         document.getElementById('next').style.display = 'none';
         document.getElementById('start-over').style.display = 'inline-block'; 
@@ -22,6 +23,7 @@ document.getElementById('next').addEventListener('click', function() {
 });
 
 document.getElementById('previous').addEventListener('click', function() {
+    clearScene3Content()
     if (currentScene === 1) {
         document.getElementById('previous').style.display = 'none';
     }
@@ -35,6 +37,7 @@ document.getElementById('previous').addEventListener('click', function() {
     }
 });
 document.getElementById('start-over').addEventListener('click', function() {
+    clearScene3Content()
     currentScene = 0;
     renderScene();
     
@@ -429,4 +432,10 @@ function displaySongs() {
         .text(d => d);
 
     // Since these are hardcoded, there won't be any songs exiting, but if needed, the exit code would go here
+}   
+function clearScene3Content() {
+    d3.select("#song-list").style("display", "none");
+    d3.selectAll("input").style("display", "none");
+    d3.selectAll("span").style("display", "none");
+    d3.selectAll("button").style("display", "none");
 }
