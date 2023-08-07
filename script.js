@@ -262,6 +262,21 @@ function renderScene2(raw_data) {
         // Remove tooltip
         d3.select("#tooltip").remove();
         });
+
+            // Add annotation
+         const annotations = [{
+        note: {
+            label: "Hover over each point to see the genre's average valence.",
+            title: "Note"
+        },
+        x: width / 2,
+        y: margin.top / 2,
+        dy: 0,
+        dx: 0   
+    }];
+
+    const makeAnnotations = d3.annotation()
+        .annotations(annotations);
     
         let maxTempoData = aggregatedData.reduce((max, curr) => (curr.averageTempo > max.averageTempo ? curr : max), {averageTempo: -Infinity});
         const annotations2 = [{
@@ -284,20 +299,6 @@ function renderScene2(raw_data) {
         .attr("class", "annotation-group")
         .call(makeAnnotations2);
 
-    // Add annotation
-    const annotations = [{
-        note: {
-            label: "Hover over each point to see the genre's average loudness.",
-            title: "Note"
-        },
-        x: width / 2,
-        y: margin.top / 2,
-        dy: 0,
-        dx: 0   
-    }];
-
-    const makeAnnotations = d3.annotation()
-        .annotations(annotations);
 
     svg.append("g")
         .attr("class", "annotation-group")
@@ -327,7 +328,8 @@ async function loadData() {
             " data point, you can see the danceability of each song. Dancing is important for a party too.";
             break;
         case 1:
-            paragraphContent = "In this scene we are looking at the top 30 genres with the fastest tempos. ";
+            paragraphContent = "In this scene we are looking at the top 30 genres with the fastest tempos. Fast music means more energetic dancing like we" +
+            " saw in the previous scene. If you hove over each point you can see each genre's valence. Valence is the musical positiveness conveyed by a track.";
             break;
         case 2:
             paragraphContent = "Description for Scene 3";
