@@ -27,8 +27,12 @@ document.getElementById('previous').addEventListener('click', function() {
 
     currentScene = (currentScene - 1 + scenes.length) % scenes.length;
     renderScene();
-});
 
+    if (currentScene === scenes.length - 2) { // If you're on the second to the last scene
+        document.getElementById('next').style.display = 'inline-block';
+        document.getElementById('start-over').style.display = 'none';
+    }
+});
 document.getElementById('start-over').addEventListener('click', function() {
     currentScene = 0;
     renderScene();
@@ -170,7 +174,7 @@ function renderScene1(raw_data) {
     .type(d3.annotationLabel)
     .annotations(annotations2);
 
-chartGroup.append("g")
+svg.append("g")
     .attr("class", "annotation-group")
     .call(makeAnnotations2);
 }
@@ -268,7 +272,7 @@ function renderScene2(raw_data) {
         x: width / 2,
         y: margin.top / 2,
         dy: 0,
-        dx: 0
+        dx: 0   
     }];
 
     const makeAnnotations = d3.annotation()
