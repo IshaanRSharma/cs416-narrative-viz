@@ -154,7 +154,7 @@ function renderScene1(raw_data) {
         .annotations(annotations);
 
     svg.append("g")
-        .attr("class", "annotation-group")
+        .attr("class", "annotation-group1")
         .call(makeAnnotations);
     
     let maxEnergyData = aggregatedData.reduce((max, curr) => (curr.averageEnergy > max.averageEnergy ? curr : max), {averageEnergy: -Infinity});
@@ -174,7 +174,7 @@ function renderScene1(raw_data) {
     .annotations(annotations2);
 
 svg.append("g")
-    .attr("class", "annotation-group5")
+    .attr("class", "annotation-group2")
     .call(makeAnnotations2);
 }
 
@@ -324,7 +324,7 @@ function renderScene2(raw_data) {
     .annotations(annotations);
 
     svg.append("g")
-        .attr("class", "annotation-group5")
+        .attr("class", "annotation-group")
         .call(makeAnnotations);
   
   }
