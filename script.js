@@ -260,39 +260,7 @@ function renderScene2(raw_data) {
 
     console.log(annotations);  
 }
-
-        if (d.averageTempo === maxTempoData) {
-            // Show tempo annotation
-            console.log(d)
-            svg.append("g")
-                .attr("class", "tempo-annotation")
-                .call(d3.annotation().annotations([{
-                    type: "point",
-                    note: {
-                        title: "Max Tempo Genre",
-                        label: "This genre has the fastest tempo."
-                    },
-                    x: xScale(maxTempoData.genre) + xScale.bandwidth() / 2,
-                    y: yScale(maxTempoData.averageTempo),
-                    dy: -50,
-                    dx: 50
-                }]));
-            }
-        }).on("mouseout", function(d) {
-            d3.select(this)
-            .attr("r", 5)
-            .style("fill", "#0077b6");
-    
-            // Remove tooltip
-            d3.select("#tooltip").remove();
-            
-            if (d.averageValence === maxValenceData) {
-                chartGroup.select(".valence-annotation").remove();
-            }
-            if (d.averageTempo === maxTempoData) {
-                chartGroup.select(".tempo-annotation").remove();
-            }
-        });
+});
 
 
 
@@ -340,7 +308,8 @@ async function loadData() {
             break;
         case 1:
             paragraphContent = "In this scene we are looking at the top 30 genres with the fastest tempos. Tempos is on the y-axis and goes from 0-300. Fast music means more energetic dancing like we" +
-            " saw in the previous scene. If you hover over each point you can see each genre's valence. Valence is the musical positiveness conveyed by a track.";
+            " saw in the previous scene. If you hover over each point you can see each genre's valence. Valence is the musical positiveness conveyed by a track. In this scenario, UK Alt hip hop has the fastest tempo." +
+            " Chinese idol pop had the highest average valence of 0.784 meaning it is the happiest genre.";
             break;
         case 2:
             paragraphContent = "In this scene, you can curate your own 10 song party playlist based on " +
