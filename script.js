@@ -45,10 +45,10 @@ function clearScene() {
 
 function renderScene() {
     clearScene();
-    addParagraphForScene(currentScene)
     loadData().then(data => {
         scenes[currentScene](data);
     });
+    addParagraphForScene(currentScene)
 
 }
 
