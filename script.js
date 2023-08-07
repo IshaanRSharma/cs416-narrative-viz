@@ -252,7 +252,7 @@ function renderScene2(raw_data) {
             .attr("font-size", "11px")
             .attr("font-weight", "bold")
             .attr("fill", "black")
-            .text(`Loudness: ${d.averageLoudness}`);
+            .text(`Loudness: ${d.averageValence}`);
         })
         .on("mouseout", function(d) {
             d3.select(this)
@@ -262,6 +262,27 @@ function renderScene2(raw_data) {
         // Remove tooltip
         d3.select("#tooltip").remove();
         });
+    
+        let maxTempoData = aggregatedData.reduce((max, curr) => (curr.averageTempo > max.averageTempo ? curr : max), {averageTempo: -Infinity});
+        const annotations2 = [{
+            type: "point",
+            note: {
+                title: "Max Tempo Genre",
+                label: "You can see that this genre has the fastest tempo. This is a fast song, this will be a fun party."
+            },
+            x: xScale(maxTempoData.genre) + xScale.bandwidth() / 2,
+            y: yScale(maxTempoData.averageTempo),
+            dy: -50,
+            dx: 50
+        }];
+    
+        const makeAnnotations2 = d3.annotation()
+        .type(d3.annotationLabel)
+        .annotations(annotations2);
+    
+    chartGroup.append("g")
+        .attr("class", "annotation-group")
+        .call(makeAnnotations2);
 
     // Add annotation
     const annotations = [{
@@ -281,27 +302,6 @@ function renderScene2(raw_data) {
     svg.append("g")
         .attr("class", "annotation-group")
         .call(makeAnnotations);
-    
-    let maxTempoData = aggregatedData.reduce((max, curr) => (curr.averageTempo > max.averageTempo ? curr : max), {averageTempo: -Infinity});
-    const annotations2 = [{
-        type: "point",
-        note: {
-            title: "Max Tempo Genre",
-            label: "You can see that this genre has the fastest tempo. This is a fast song, this will be a fun party."
-        },
-        x: xScale(maxTempoData.genre) + xScale.bandwidth() / 2,
-        y: yScale(maxTempoData.averageTempo),
-        dy: -50,
-        dx: 50
-    }];
-
-    const makeAnnotations2 = d3.annotation()
-    .type(d3.annotationLabel)
-    .annotations(annotations2);
-
-svg.append("g")
-    .attr("class", "annotation-group")
-    .call(makeAnnotations2);
   
   }
   
