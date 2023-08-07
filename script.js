@@ -204,6 +204,9 @@ function renderScene2(raw_data) {
     var xAxis = d3.axisBottom(xScale);
     var yAxis = d3.axisLeft(yScale);
 
+    let maxValenceData = aggregatedData.reduce((max, curr) => (curr.averageValence > max.averageValence ? curr : max), {averageValence: -Infinity});
+    let maxTempoData = aggregatedData.reduce((max, curr) => (curr.averageTempo > max.averageTempo ? curr : max), {averageTempo: -Infinity});
+
 
     // Draw the axes
     var chartGroup = svg.append("g")
@@ -253,32 +256,58 @@ function renderScene2(raw_data) {
             .attr("font-weight", "bold")
             .attr("fill", "black")
             .text(`Valence: ${d.averageValence}`);
-        })
-        .on("mouseout", function(d) {
+        
+        if (d === maxValenceData) {
+            // Show valence annotation
+            chartGroup.append("g")
+                .attr("class", "valence-annotation")
+                .call(d3.annotation().annotations([{
+                    type: "point",
+                    note: {
+                        title: "Max Valence Genre",
+                        label: "This genre has the highest valence."
+                    },
+                    x: xScale(maxValenceData.genre) + xScale.bandwidth() / 2,
+                    y: yScale(maxValenceData.averageValence),
+                    dy: -50,
+                    dx: 50
+                }]));
+        }
+
+        if (d === maxTempoData) {
+            // Show tempo annotation
+            chartGroup.append("g")
+                .attr("class", "tempo-annotation")
+                .call(d3.annotation().annotations([{
+                    type: "point",
+                    note: {
+                        title: "Max Tempo Genre",
+                        label: "This genre has the fastest tempo."
+                    },
+                    x: xScale(maxTempoData.genre) + xScale.bandwidth() / 2,
+                    y: yScale(maxTempoData.averageTempo),
+                    dy: -50,
+                    dx: 50
+                }]));
+            }
+        }).on("mouseout", function(d) {
             d3.select(this)
             .attr("r", 5)
             .style("fill", "#0077b6");
     
+            // Remove tooltip
+            d3.select("#tooltip").remove();
+            
+            if (d === maxValenceData) {
+                chartGroup.select(".valence-annotation").remove();
+            }
+            if (d === maxTempoData) {
+                chartGroup.select(".tempo-annotation").remove();
+            }
+        });
         // Remove tooltip
         d3.select("#tooltip").remove();
-        });
-    
-        let maxTempoData = aggregatedData.reduce((max, curr) => (curr.averageTempo > max.averageTempo ? curr : max), {averageTempo: -Infinity});
-        const annotations2 = [{
-            type: "point",
-            note: {
-                title: "Max Tempo Genre",
-                label: "You can see that this genre has the fastest tempo. This is a fast song, this will be a fun party."
-            },
-            x: xScale(maxTempoData.genre) + xScale.bandwidth() / 2,
-            y: yScale(maxTempoData.averageTempo),
-            dy: -50,
-            dx: 50
-        }];
-    
-        const makeAnnotations2 = d3.annotation()
-        .annotations(annotations2);
-    
+
     chartGroup.append("g")
         .attr("class", "annotation-group3")
         .call(makeAnnotations2);
