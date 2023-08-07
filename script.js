@@ -108,15 +108,97 @@ function renderScene1(raw_data) {
       .text("Diabetes Status and Sex Bar Chart");
   }
 
-function renderScene2(data) {
-    const svg = d3.select("#slide-container svg");
-    // D3 code for the second scene.
-    svg.append("circle")
-       .attr("cx", 150)
-       .attr("cy", 150)
-       .attr("r", 70)
-       .attr("fill", "#4CAF50");
-}
+  function renderScene2(data) {
+    clearScene();
+  
+    // Extracting relevant data for the pie chart
+    const conditionsData = data.map(d => ({
+      condition: d.BMI || d.HighBP || d.HighChol,
+      diabetes: d.Diabetes_012
+    }));
+  
+    // Filtering data for valid conditions (not null or undefined)
+    const filteredData = conditionsData.filter(d => d.condition !== null && d.condition !== undefined);
+  
+    // Grouping data based on condition and diabetes status
+    const groupedData = d3.group(filteredData, d => d.condition, d => d.diabetes);
+  
+    // Calculating the total count of each condition
+    const conditionCounts = Array.from(groupedData, ([, subMap]) => ({
+      condition: subMap[0].condition,
+      totalCount: d3.sum(subMap, d => d.length)
+    }));
+  
+    // Setting up the pie chart dimensions
+    const margin = { top: 30, right: 30, bottom: 30, left: 30 };
+    const width = 400;
+    const height = 400;
+    const radius = Math.min(width, height) / 2 - 30;
+  
+    // Append the SVG object to the chart div
+    const svg = d3.select("#chart")
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + (width / 2) + "," + (height / 2) + ")");
+  
+    // Create a color scale for the pie chart slices
+    const color = d3.scaleOrdinal()
+      .domain(conditionCounts.map(d => d.condition))
+      .range(d3.schemeCategory10);
+  
+    // Create a pie function to calculate angles for the pie chart
+    const pie = d3.pie()
+      .value(d => d.totalCount);
+  
+    // Create an arc function to draw the pie chart slices
+    const arc = d3.arc()
+      .innerRadius(0)
+      .outerRadius(radius);
+  
+    // Generate the pie chart slices
+    const pieData = pie(conditionCounts);
+  
+    // Append the slices to the pie chart
+    svg.selectAll("arc")
+      .data(pieData)
+      .enter()
+      .append("path")
+      .attr("d", arc)
+      .attr("fill", d => color(d.data.condition))
+      .attr("stroke", "white")
+      .style("stroke-width", "2px")
+      .style("opacity", 0.7);
+  
+    // Add chart title
+    svg.append("text")
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .text("Health Conditions Distribution");
+  
+    // Add legend
+    const legend = svg.selectAll(".legend")
+      .data(pieData)
+      .enter()
+      .append("g")
+      .attr("class", "legend")
+      .attr("transform", (d, i) => "translate(-100," + (i * 20) + ")");
+  
+    legend.append("rect")
+      .attr("x", width / 2)
+      .attr("width", 18)
+      .attr("height", 18)
+      .attr("fill", d => color(d.data.condition));
+  
+    legend.append("text")
+      .attr("x", (width / 2) + 25)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "start")
+      .text(d => d.data.condition);
+  }
+  
 
 function renderScene3(data) {
     const svg = d3.select("#slide-container svg");
