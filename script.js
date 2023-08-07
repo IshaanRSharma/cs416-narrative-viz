@@ -250,29 +250,29 @@ function renderScene2(raw_data) {
             .attr("fill", "black")
             .text(`Valence: ${d.averageValence}`);
         
-            if (d.averageValence === maxValenceData) {
-                console.log(d);
-                const annotations = [{
-                    type: annotationLabel,
-                    note: {
-                        title: "Max Valence Genre",
-                        label: "This genre has the highest valence."
-                    },
-                    x: xScale(maxValenceData.genre) + xScale.bandwidth() / 2,
-                    y: yScale(maxValenceData.averageValence),
-                    dy: -50,
-                    dx: 50
-                }];
-            
-                const makeAnnotations = annotation()
-                    .type(annotationLabel)
-                    .annotations(annotations);
-            
-                chartGroup.append("g")
-                    .attr("class", "valence-annotation")
-                    .call(makeAnnotations);
-            
-                console.log(annotations);
+if (d.averageValence === maxValenceData.genre) {
+    console.log(d);
+    const annotations = [{
+        type: annotationLabel,
+        note: {
+            title: "Max Valence Genre",
+            label: "This genre has the highest valence."
+        },
+        x: xScale(maxValenceData.genre) + xScale.bandwidth() / 2,
+        y: yScale(maxValenceData.averageValence),
+        dy: -50,
+        dx: 50
+    }];
+
+    const makeAnnotations = annotation()
+        .type(annotationLabel)
+        .annotations(annotations);
+
+    chartGroup.append("g")
+        .attr("class", "valence-annotation")
+        .call(makeAnnotations);
+
+    console.log(annotations);  
 
         if (d === maxTempoData) {
             // Show tempo annotation
