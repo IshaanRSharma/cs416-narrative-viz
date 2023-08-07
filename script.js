@@ -78,6 +78,14 @@ function renderScene1(raw_data) {
     var chartGroup = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    chartGroup.append("text")
+        .attr("transform", "rotate(-90)")  // To rotate the text and make it vertical
+        .attr("y", 0)  
+        .attr("x", -chartHeight / 2)  
+        .attr("dy", "-3em")  
+        .style("text-anchor", "middle")
+        .text("Energy");
+
     chartGroup.append("g")
         .attr("transform", "translate(0," + chartHeight + ")")
         .call(xAxis)
@@ -142,6 +150,27 @@ function renderScene1(raw_data) {
     svg.append("g")
         .attr("class", "annotation-group")
         .call(makeAnnotations);
+    
+    let maxEnergyData = aggregatedData.reduce((max, curr) => (curr.averageEnergy > max.averageEnergy ? curr : max), {averageEnergy: -Infinity});
+    const annotations2 = [{
+        type: "point",
+        note: {
+            title: "Max Energy Genre",
+            label: "You can see that this genre has the most energy. Maybe a bit too much for a family reunion party."
+        },
+        x: xScale(maxEnergyData.genre) + xScale.bandwidth() / 2,
+        y: yScale(maxEnergyData.averageEnergy),
+        dy: -50,
+        dx: 50
+    }];
+
+    const makeAnnotations2 = d3.annotation()
+    .type(d3.annotationLabel)
+    .annotations(annotations2);
+
+chartGroup.append("g")
+    .attr("class", "annotation-group")
+    .call(makeAnnotations2);
 }
 
   
