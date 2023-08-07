@@ -204,7 +204,7 @@ function aggregateData(data) {
             current.totalEnergy += +d.energy;
             genreMap.set(d.genre, current);
         } else {
-            genreMap.set(d.genre, { count: 1, totalEnergy: +d.energy });
+            genreMap.set(d.genre, { count: 1, totalEnergy: +d.energy,  totalDanceability: +d.danceability });
         }
     });
 
@@ -212,7 +212,8 @@ function aggregateData(data) {
     genreMap.forEach((value, key) => {
         aggregatedData.push({
             genre: key,
-            averageEnergy: value.totalEnergy / value.count
+            averageEnergy: value.totalEnergy / value.count,
+            averageDanceability: value.totalDanceability / value.count 
         });
     });
     aggregatedData.sort((a, b) => b.averageEnergy - a.averageEnergy);
