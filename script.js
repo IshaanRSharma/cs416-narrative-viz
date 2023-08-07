@@ -262,8 +262,6 @@ function renderScene2(raw_data) {
         // Remove tooltip
         d3.select("#tooltip").remove();
         });
-        const makeAnnotations = d3.annotation()
-        .annotations(annotations);
     
     //     let maxTempoData = aggregatedData.reduce((max, curr) => (curr.averageTempo > max.averageTempo ? curr : max), {averageTempo: -Infinity});
     //     const annotations2 = [{
@@ -298,6 +296,9 @@ function renderScene2(raw_data) {
         dy: 0,
         dx: 0   
     }];
+
+    const makeAnnotations = d3.annotation()
+    .annotations(annotations);
 
     svg.append("g")
         .attr("class", "annotation-group")
