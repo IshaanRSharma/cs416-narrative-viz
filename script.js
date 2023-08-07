@@ -52,7 +52,7 @@ function renderScene() {
     loadData().then(data => {
         scenes[currentScene](data);
     });
-   // addParagraphForScene(currentScene)
+   addParagraphForScene(currentScene)
 
 }
 
@@ -321,7 +321,7 @@ async function loadData() {
  }
 
  function addParagraphForScene(sceneIndex) {
-    const container = document.getElementById('slide-container'); // assuming you have a div with id "sceneContainer" where you want to append the paragraph
+    const container = document.getElementById('text-container'); // assuming you have a div with id "sceneContainer" where you want to append the paragraph
     container.innerHTML = ''; 
     let paragraphContent;
     switch (sceneIndex) {

@@ -32,3 +32,9 @@ body {
     max-width: 800px;  /* Limits the width to make it more readable */
     text-align: justify;  /* Justifies the paragraph content for better alignment */
 }
+
+#text-container {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;  
+}
