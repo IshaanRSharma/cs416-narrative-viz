@@ -68,7 +68,7 @@ function renderScene1(raw_data) {
         .padding(0.5);
 
     var yScale = d3.scaleLinear()
-        .domain([0, d3.max(aggregatedData, d => d.averageEnergy)])
+        .domain([0, d3.max(aggregatedData, d => d.averageEnergy) + 0.2])
         .range([chartHeight, 0]);
 
     var xAxis = d3.axisBottom(xScale);
@@ -91,7 +91,7 @@ function renderScene1(raw_data) {
         .call(yAxis);
 
     // Draw the scatterplot
-    var circles = chartGroup.selectAll("circle")
+    chartGroup.selectAll("circle")
         .data(aggregatedData)
         .enter().append("circle")
         .attr("cx", d => xScale(d.genre) + xScale.bandwidth() / 2)  // Align with center of band
@@ -99,10 +99,29 @@ function renderScene1(raw_data) {
         .attr("r", 5)
         .style("fill", "#0077b6")
         .on("mouseover", function(event, d) {
-            //... (rest remains the same)
+            d3.select(this)
+            .attr("r", 7)
+            .style("fill", "#ff5733");
+    
+        // Add tooltip
+        chartGroup.append("text")
+            .attr("id", "tooltip")
+            .attr("x", xScale(d.genre) + xScale.bandwidth() / 2)  // Center the tooltip text within the band
+            .attr("y", yScale(d.averageEnergy) - 15)
+            .attr("text-anchor", "middle")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "11px")
+            .attr("font-weight", "bold")
+            .attr("fill", "black")
+            .text(`Danceability: ${d.danceability}`);
         })
         .on("mouseout", function(d) {
-            //... (rest remains the same)
+            d3.select(this)
+            .attr("r", 5)
+            .style("fill", "#0077b6");
+    
+        // Remove tooltip
+        d3.select("#tooltip").remove();
         });
 
     // Add annotation
@@ -197,5 +216,5 @@ function aggregateData(data) {
         });
     });
     aggregatedData.sort((a, b) => b.averageEnergy - a.averageEnergy);
-    return aggregatedData.slice(0, 20);
+    return aggregatedData.slice(0, 30);
 }
