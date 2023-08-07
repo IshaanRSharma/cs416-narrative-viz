@@ -250,10 +250,10 @@ function renderScene2(raw_data) {
             .attr("fill", "black")
             .text(`Valence: ${d.averageValence}`);
         
-            if (d === maxValenceData) {
+            if (d.valence === maxValenceData) {
                 console.log(d);
                 const annotations = [{
-                    type: d3.annotationLabel, // Try using this instead of "point"
+                    type: annotationLabel,
                     note: {
                         title: "Max Valence Genre",
                         label: "This genre has the highest valence."
@@ -264,11 +264,15 @@ function renderScene2(raw_data) {
                     dx: 50
                 }];
             
-                chartGroup.append("a")
-                   .attr("class", "valence-annotation")
-                   .call(d3.annotation().annotations(annotations));
-                   console.log(annotations)
-            }
+                const makeAnnotations = annotation()
+                    .type(annotationLabel)
+                    .annotations(annotations);
+            
+                chartGroup.append("g")
+                    .attr("class", "valence-annotation")
+                    .call(makeAnnotations);
+            
+                console.log(annotations);
 
         if (d === maxTempoData) {
             // Show tempo annotation
