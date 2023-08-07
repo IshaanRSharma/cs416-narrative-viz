@@ -148,7 +148,33 @@ function renderScene3(data) {
        .attr("fill", "#FF5733");
 }
 
-    async function loadData() {
+async function loadData() {
         const data = await d3.csv("Data/data.csv");
         return data;
+ }
+
+ function addParagraphForScene(sceneIndex) {
+    const container = document.getElementById('sceneContainer'); // assuming you have a div with id "sceneContainer" where you want to append the paragraph
+    container.innerHTML = ""; // Clear existing content
+
+    let paragraphContent;
+    switch (sceneIndex) {
+        case 0:
+            paragraphContent = "Description for Scene 1";
+            break;
+        case 1:
+            paragraphContent = "Description for Scene 2";
+            break;
+        case 2:
+            paragraphContent = "Description for Scene 3";
+            break;
+        default:
+            paragraphContent = ""; // default or for additional scenes
     }
+
+    if (paragraphContent) {
+        const paragraph = document.createElement('p');
+        paragraph.textContent = paragraphContent;
+        container.appendChild(paragraph);
+    }
+}
