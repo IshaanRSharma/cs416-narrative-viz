@@ -250,7 +250,7 @@ function renderScene2(raw_data) {
             .attr("fill", "black")
             .text(`Valence: ${d.averageValence}`);
         
-            if (d.valence === maxValenceData) {
+            if (d.averageValence === maxValenceData) {
                 console.log(d);
                 const annotations = [{
                     type: annotationLabel,
