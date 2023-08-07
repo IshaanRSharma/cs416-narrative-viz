@@ -382,7 +382,7 @@ function aggregateData2(data) {
     return aggregatedData.slice(0, 30);
  }
 
- function renderScene3() {
+ function renderScene3(data) {
     const attributes = ["valence", "danceability", "energy", "tempo"];
 
     // Append text input boxes
@@ -404,8 +404,8 @@ function aggregateData2(data) {
         .on("click", displaySongs);  // When the button is clicked, display the hardcoded songs
 }
 
-async function displaySongs() {
-    const allSongs = await loadData();
+function displaySongs(data) {
+    const allSongs = data
     const shuffledSongs = shuffle(allSongs);
     const topSongs = shuffledSongs.slice(0, 10).map(song => song.title); // Assuming there's a title property for each song
 
