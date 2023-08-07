@@ -396,5 +396,5 @@ function aggregateData2(data) {
     });
     aggregatedData.sort((a, b) => b.averageTempo - a.averageTempo);
     return aggregatedData.slice(0, 30);
+ }
 }
-
