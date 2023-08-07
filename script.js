@@ -286,7 +286,7 @@ function renderScene2(raw_data) {
 
 
             // Add annotation
-         const annotations = [{
+    const annotations = [{
         note: {
             label: "Hover over each point to see the genre's average valence.",
             title: "Note"
@@ -301,7 +301,7 @@ function renderScene2(raw_data) {
     .annotations(annotations);
 
     svg.append("g")
-        .attr("class", "annotation-group")
+        .attr("class", "annotation-group2")
         .call(makeAnnotations);
   
   }
@@ -332,7 +332,8 @@ async function loadData() {
             " saw in the previous scene. If you hove over each point you can see each genre's valence. Valence is the musical positiveness conveyed by a track.";
             break;
         case 2:
-            paragraphContent = "Description for Scene 3";
+            paragraphContent = "In this scene, you can curate your own 10 song party playlist based on " +
+            "inputs of valence, energy, danceability, and tempo to enhance your next party's experience.";
             break;
         default:
             paragraphContent = ""; // default or for additional scenes
