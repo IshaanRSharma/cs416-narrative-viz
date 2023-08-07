@@ -113,7 +113,7 @@ function renderScene1(raw_data) {
             .attr("font-size", "11px")
             .attr("font-weight", "bold")
             .attr("fill", "black")
-            .text(`Danceability: ${d.danceability}`);
+            .text(`Danceability: ${d.averageDanceability}`);
         })
         .on("mouseout", function(d) {
             d3.select(this)
