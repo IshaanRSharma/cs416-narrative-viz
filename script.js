@@ -378,3 +378,56 @@ function aggregateData2(data) {
     aggregatedData.sort((a, b) => b.averageTempo - a.averageTempo);
     return aggregatedData.slice(0, 30);
  }
+
+ function renderScene3(songs) {
+    const sliders = ["valence", "danceability", "energy", "tempo"].map(attribute => {
+        const div = d3.select("body").append("div");
+        
+        const slider = d3.sliderHorizontal()
+          .domain([0, 1])  // adjust if necessary, e.g., for tempo
+          .width(300)
+          .displayValue(false)
+          .on('end', () => filterSongs(songs, sliders));  // pass songs and sliders to filterSongs
+
+        div.append("svg")
+          .attr("width", 500)
+          .attr("height", 100)
+          .append("g")
+          .attr("transform", "translate(30,30)")
+          .call(slider);
+        
+        return { attribute, slider };
+    });
+}
+
+function filterSongs(songs, sliders) {
+    const filteredSongs = songs.filter(song => {
+        return sliders.every(s => {
+            if (s.attribute === "tempo") {
+                return song[s.attribute] > 50 && song[s.attribute] < 200;  // adjust as necessary
+            }
+            return song[s.attribute] > s.slider.value();
+        });
+    });
+
+    // Displaying the top 10 songs
+    displaySongs(filteredSongs.slice(0, 10));
+}
+
+function displaySongs(topSongs) {
+    const songContainer = d3.select("#song-list");
+
+    // Clear previous songs
+    songContainer.html("");
+
+    const songList = songContainer.selectAll(".song")
+        .data(topSongs, d => d.title);
+
+    // Enter new songs
+    songList.enter().append("div")
+        .attr("class", "song")
+        .text(d => d.title);
+
+    // Exit songs not in the top 10 anymore
+    songList.exit().remove();
+}
