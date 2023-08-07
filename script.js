@@ -1,6 +1,6 @@
 let currentScene = 0;
 const scenes = [renderScene1, renderScene2, renderScene3];  
-const ageBins = ["0-20", "20-40", "40-60", "60-80", "80-100"];
+
 
 
 window.onload = renderScene;
@@ -199,7 +199,7 @@ async function loadData() {
  }
 
  function addParagraphForScene(sceneIndex) {
-    const container = document.getElementById('sceneContainer'); // assuming you have a div with id "sceneContainer" where you want to append the paragraph
+    const container = document.getElementById('slide-container'); // assuming you have a div with id "sceneContainer" where you want to append the paragraph
    
     let paragraphContent;
     switch (sceneIndex) {
