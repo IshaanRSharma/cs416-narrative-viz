@@ -252,7 +252,7 @@ function renderScene2(raw_data) {
             .attr("font-size", "11px")
             .attr("font-weight", "bold")
             .attr("fill", "black")
-            .text(`Loudness: ${d.averageValence}`);
+            .text(`Valence: ${d.averageValence}`);
         })
         .on("mouseout", function(d) {
             d3.select(this)
@@ -327,7 +327,7 @@ async function loadData() {
             " data point, you can see the danceability of each song. Dancing is important for a party too.";
             break;
         case 1:
-            paragraphContent = "Description for Scene 2";
+            paragraphContent = "In this scene we are looking at the top 30 genres with the fastest tempos. ";
             break;
         case 2:
             paragraphContent = "Description for Scene 3";
