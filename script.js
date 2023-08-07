@@ -174,7 +174,7 @@ function renderScene1(raw_data) {
     .annotations(annotations2);
 
 svg.append("g")
-    .attr("class", "annotation-group")
+    .attr("class", "annotation-group5")
     .call(makeAnnotations2);
 }
 
@@ -328,7 +328,7 @@ function renderScene2(raw_data) {
     .annotations(annotations);
 
     svg.append("g")
-        .attr("class", "annotation-group2")
+        .attr("class", "annotation-group5")
         .call(makeAnnotations);
   
   }
