@@ -45,6 +45,7 @@ function clearScene() {
 
 function renderScene() {
     clearScene();
+    addParagraphForScene(currentScene)
     loadData().then(data => {
         scenes[currentScene](data);
     });
@@ -204,7 +205,9 @@ async function loadData() {
     let paragraphContent;
     switch (sceneIndex) {
         case 0:
-            paragraphContent = "Description for Scene 1";
+            paragraphContent = "Here we are looking at the top 30 most energetic genres. You need energy in your music if you" +
+            " want to have a fun party. Here we see how the genres compare to the energy levels. Additionally, if you hover over each " +
+            " data point, you can see the danceability of each song. Dancing is important for a party too.";
             break;
         case 1:
             paragraphContent = "Description for Scene 2";
@@ -217,7 +220,7 @@ async function loadData() {
     }
 
     if (paragraphContent) {
-        const paragraph = document.createElement('p');
+        const paragraph = document.createElement('h1');
         paragraph.textContent = paragraphContent;
         container.appendChild(paragraph);
     }
