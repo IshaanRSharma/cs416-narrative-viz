@@ -54,6 +54,20 @@ function renderScene() {
     });
    addParagraphForScene(currentScene)
 
+   if (currentScene === 2) { // If on scene 3 (index starts from 0)
+    // Show sliders and buttons
+    document.getElementById('slider1').style.display = 'block';
+    document.getElementById('slider2').style.display = 'block';
+    document.getElementById('btn1').style.display = 'block';
+    document.getElementById('btn2').style.display = 'block';
+} else {
+    // Hide sliders and buttons
+    document.getElementById('slider1').style.display = 'none';
+    document.getElementById('slider2').style.display = 'none';
+    document.getElementById('btn1').style.display = 'none';
+    document.getElementById('btn2').style.display = 'none';
+}
+
 }
 
 function renderScene1(raw_data) {
@@ -250,7 +264,7 @@ function renderScene2(raw_data) {
                     dx: 50
                 }];
             
-                chartGroup.select("").append("g")
+                chartGroup.append("a")
                    .attr("class", "valence-annotation")
                    .call(d3.annotation().annotations(annotations));
                    console.log(annotations)
