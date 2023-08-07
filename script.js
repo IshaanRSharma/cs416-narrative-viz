@@ -236,25 +236,24 @@ function renderScene2(raw_data) {
             .attr("fill", "black")
             .text(`Valence: ${d.averageValence}`);
         
-        if (d === maxValenceData) {
-            // Show valence annotation'
-            console.log(d)
-            const annotations = [{
-                type: d3.annotationLabel, // Use the full type if "point" doesn't work
-                note: {
-                    title: "Max Valence Genre",
-                    label: "This genre has the highest valence."
-                },
-                x: xScale(maxValenceData.genre) + xScale.bandwidth() / 2,
-                y: yScale(maxValenceData.averageValence),
-                dy: -50,
-                dx: 50
-            }];
-        
-            svg.append("g")
-               .attr("class", "valence-annotation")
-               .call(d3.annotation().annotations(annotations));
-        }
+            if (d === maxValenceData) {
+                console.log(d);
+                const annotations = [{
+                    type: d3.annotationLabel, // Try using this instead of "point"
+                    note: {
+                        title: "Max Valence Genre",
+                        label: "This genre has the highest valence."
+                    },
+                    x: xScale(maxValenceData.genre) + xScale.bandwidth() / 2,
+                    y: yScale(maxValenceData.averageValence),
+                    dy: -50,
+                    dx: 50
+                }];
+            
+                svg.append("g")
+                   .attr("class", "valence-annotation")
+                   .call(d3.annotation().annotations(annotations));
+            }
 
         if (d === maxTempoData) {
             // Show tempo annotation
