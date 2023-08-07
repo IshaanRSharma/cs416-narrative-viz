@@ -403,7 +403,7 @@ function aggregateData2(data) {
 function displaySongs(data) {
     const allSongs = data
     const shuffledSongs = shuffle(allSongs);
-    const topSongs = shuffledSongs.slice(0, 10).map(song => song.title); // Assuming there's a title property for each song
+    const topSongs = shuffledSongs.slice(0, 10).map(song => song.trackName); // Assuming there's a title property for each song
 
     const songContainer = d3.select("#song-list");
 
@@ -425,10 +425,3 @@ function clearScene3Content() {
     d3.selectAll("button").style("display", "none");
 }
 
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];  // Swap elements
-    }
-    return array;
-}
