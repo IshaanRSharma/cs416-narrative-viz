@@ -299,7 +299,7 @@ if (d.averageValence === maxValenceData.genre) {
             .style("fill", "#0077b6");
     
             // Remove tooltip
-            d3.select("#tooltip").remove();
+            // d3.select("#tooltip").remove();
             
             if (d === maxValenceData) {
                 chartGroup.select(".valence-annotation").remove();
