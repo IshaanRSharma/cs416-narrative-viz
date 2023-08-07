@@ -237,24 +237,28 @@ function renderScene2(raw_data) {
             .text(`Valence: ${d.averageValence}`);
         
         if (d === maxValenceData) {
-            // Show valence annotation
+            // Show valence annotation'
+            console.log(d)
+            const annotations = [{
+                type: d3.annotationLabel, // Use the full type if "point" doesn't work
+                note: {
+                    title: "Max Valence Genre",
+                    label: "This genre has the highest valence."
+                },
+                x: xScale(maxValenceData.genre) + xScale.bandwidth() / 2,
+                y: yScale(maxValenceData.averageValence),
+                dy: -50,
+                dx: 50
+            }];
+        
             svg.append("g")
-                .attr("class", "valence-annotation")
-                .call(d3.annotation().annotations([{
-                    type: "point",
-                    note: {
-                        title: "Max Valence Genre",
-                        label: "This genre has the highest valence."
-                    },
-                    x: xScale(maxValenceData.genre) + xScale.bandwidth() / 2,
-                    y: yScale(maxValenceData.averageValence),
-                    dy: -50,
-                    dx: 50
-                }]));
+               .attr("class", "valence-annotation")
+               .call(d3.annotation().annotations(annotations));
         }
 
         if (d === maxTempoData) {
             // Show tempo annotation
+            console.log(d)
             svg.append("g")
                 .attr("class", "tempo-annotation")
                 .call(d3.annotation().annotations([{
@@ -326,13 +330,13 @@ async function loadData() {
     let paragraphContent;
     switch (sceneIndex) {
         case 0:
-            paragraphContent = "Here we are looking at the top 30 most energetic genres. You need energy in your music if you" +
+            paragraphContent = "Here we are looking at the top 30 most energetic genres. Energy is the y-axis with a scale from 0.0 - 1.0. You need energy in your music if you" +
             " want to have a fun party. Here we see how the genres compare to the energy levels. Additionally, if you hover over each " +
             " data point, you can see the danceability of each song. Dancing is important for a party too.";
             break;
         case 1:
-            paragraphContent = "In this scene we are looking at the top 30 genres with the fastest tempos. Fast music means more energetic dancing like we" +
-            " saw in the previous scene. If you hove over each point you can see each genre's valence. Valence is the musical positiveness conveyed by a track.";
+            paragraphContent = "In this scene we are looking at the top 30 genres with the fastest tempos. Tempos is on the y-axis and goes from 0-300. Fast music means more energetic dancing like we" +
+            " saw in the previous scene. If you hover over each point you can see each genre's valence. Valence is the musical positiveness conveyed by a track.";
             break;
         case 2:
             paragraphContent = "In this scene, you can curate your own 10 song party playlist based on " +
