@@ -80,13 +80,13 @@ function renderScene1(raw_data) {
     var chartGroup = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        chartGroup.append("text")
-    .attr("transform", "rotate(-90)")  // To rotate the text and make it vertical
-    .attr("y", -50) 
-    .attr("x", -chartHeight / 2)  
-    .attr("dy", "-3em")  
-    .style("text-anchor", "middle")
-    .text("Energy");
+    //     chartGroup.append("text")
+    // .attr("transform", "rotate(-90)")  // To rotate the text and make it vertical
+    // .attr("y", -50) 
+    // .attr("x", -chartHeight / 2)  
+    // .attr("dy", "-3em")  
+    // .style("text-anchor", "middle")
+    // .text("Energy");
 
     chartGroup.append("g")
         .attr("transform", "translate(0," + chartHeight + ")")
@@ -220,7 +220,7 @@ async function loadData() {
     }
 
     if (paragraphContent) {
-        const paragraph = document.createElement('h1');
+        const paragraph = document.createElement('h3');
         paragraph.textContent = paragraphContent;
         container.appendChild(paragraph);
     }
