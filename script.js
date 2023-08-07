@@ -289,11 +289,6 @@ function renderScene2(raw_data) {
   }
   
 
-function renderScene3(data) {
-    const svg = d3.select("#slide-container svg");
-
-}
-
 async function loadData() {
         const data = await d3.csv("Data/data.csv");
         return data;
@@ -383,6 +378,7 @@ function aggregateData2(data) {
  }
 
  function renderScene3(data) {
+    const svg = d3.select("#slide-container svg");
     const attributes = ["valence", "danceability", "energy", "tempo"];
 
     // Append text input boxes
@@ -401,7 +397,7 @@ function aggregateData2(data) {
     // Button to trigger song filtering/display (this could be done differently)
     d3.select("body").append("button")
         .text("Show Top 10 Songs")
-        .on("click", displaySongs);  // When the button is clicked, display the hardcoded songs
+        .on("click", displaySongs(data));  // When the button is clicked, display the hardcoded songs
 }
 
 function displaySongs(data) {
