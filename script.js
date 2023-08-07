@@ -377,7 +377,7 @@ function aggregateData2(data) {
             let current = genreMap.get(d.genre);
             current.count += 1;
             current.totalTempo += +d.tempo;
-            current.totalValence += d.valence;
+            current.totalValence += +d.valence;
             genreMap.set(d.genre, current);
         } else {
             genreMap.set(d.genre, { count: 1, totalTempo: +d.tempo,  totalValence: +d.valence });
