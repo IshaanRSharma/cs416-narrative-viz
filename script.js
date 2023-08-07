@@ -404,19 +404,10 @@ function aggregateData2(data) {
         .on("click", displaySongs);  // When the button is clicked, display the hardcoded songs
 }
 
-function displaySongs() {
-    const topSongs = [
-        "Song 1",
-        "Song 2",
-        "Song 3",
-        "Song 4",
-        "Song 5",
-        "Song 6",
-        "Song 7",
-        "Song 8",
-        "Song 9",
-        "Song 10"
-    ];
+async function displaySongs() {
+    const allSongs = await loadData();
+    const shuffledSongs = shuffle(allSongs);
+    const topSongs = shuffledSongs.slice(0, 10).map(song => song.title); // Assuming there's a title property for each song
 
     const songContainer = d3.select("#song-list");
 
@@ -430,12 +421,18 @@ function displaySongs() {
     songList.enter().append("div")
         .attr("class", "song")
         .text(d => d);
-
-    // Since these are hardcoded, there won't be any songs exiting, but if needed, the exit code would go here
-}   
+}
 function clearScene3Content() {
     d3.select("#song-list").style("display", "none");
     d3.selectAll("input").style("display", "none");
     d3.selectAll("span").style("display", "none");
     d3.selectAll("button").style("display", "none");
+}
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];  // Swap elements
+    }
+    return array;
 }
