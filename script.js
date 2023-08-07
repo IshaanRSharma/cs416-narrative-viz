@@ -48,7 +48,7 @@ function renderScene() {
     loadData().then(data => {
         scenes[currentScene](data);
     });
-    addParagraphForScene(currentScene)
+   // addParagraphForScene(currentScene)
 
 }
 
