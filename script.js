@@ -263,26 +263,26 @@ function renderScene2(raw_data) {
         d3.select("#tooltip").remove();
         });
     
-    //     let maxTempoData = aggregatedData.reduce((max, curr) => (curr.averageTempo > max.averageTempo ? curr : max), {averageTempo: -Infinity});
-    //     const annotations2 = [{
-    //         type: "point",
-    //         note: {
-    //             title: "Max Tempo Genre",
-    //             label: "You can see that this genre has the fastest tempo. This is a fast song, this will be a fun party."
-    //         },
-    //         x: xScale(maxTempoData.genre) + xScale.bandwidth() / 2,
-    //         y: yScale(maxTempoData.averageTempo),
-    //         dy: -50,
-    //         dx: 50
-    //     }];
+        let maxTempoData = aggregatedData.reduce((max, curr) => (curr.averageTempo > max.averageTempo ? curr : max), {averageTempo: -Infinity});
+        const annotations2 = [{
+            type: "point",
+            note: {
+                title: "Max Tempo Genre",
+                label: "You can see that this genre has the fastest tempo. This is a fast song, this will be a fun party."
+            },
+            x: xScale(maxTempoData.genre) + xScale.bandwidth() / 2,
+            y: yScale(maxTempoData.averageTempo),
+            dy: -50,
+            dx: 50
+        }];
     
-    //     const makeAnnotations2 = d3.annotation()
-    //     .type(d3.annotationLabel)
-    //     .annotations(annotations2);
+        const makeAnnotations2 = d3.annotation()
+        .type(d3.annotationLabel)
+        .annotations(annotations2);
     
-    // chartGroup.append("g")
-    //     .attr("class", "annotation-group")
-    //     .call(makeAnnotations2);
+    chartGroup.append("g")
+        .attr("class", "annotation-group3")
+        .call(makeAnnotations2);
 
 
             // Add annotation
