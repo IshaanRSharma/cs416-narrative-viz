@@ -194,7 +194,7 @@ function renderScene2(raw_data) {
         .padding(0.5);
 
     var yScale = d3.scaleLinear()
-        .domain([0, d3.max(aggregatedData, d => d.averageTempo) + 0.2])
+        .domain([0, d3.max(aggregatedData, d => d.averageTempo) + 100])
         .range([chartHeight, 0]);
 
     var xAxis = d3.axisBottom(xScale);
@@ -295,7 +295,7 @@ function renderScene2(raw_data) {
     .type(d3.annotationLabel)
     .annotations(annotations2);
 
-chartGroup.append("g")
+svg.append("g")
     .attr("class", "annotation-group")
     .call(makeAnnotations2);
   
@@ -304,13 +304,7 @@ chartGroup.append("g")
 
 function renderScene3(data) {
     const svg = d3.select("#slide-container svg");
-    // D3 code for the third scene.
-    svg.append("ellipse")
-       .attr("cx", 250)
-       .attr("cy", 150)
-       .attr("rx", 100)
-       .attr("ry", 50)
-       .attr("fill", "#FF5733");
+
 }
 
 async function loadData() {
@@ -379,10 +373,10 @@ function aggregateData2(data) {
             let current = genreMap.get(d.genre);
             current.count += 1;
             current.totalTempo += +d.tempo;
-            current.totalLoudness += d.loundess;
+            current.totalValence += d.valence;
             genreMap.set(d.genre, current);
         } else {
-            genreMap.set(d.genre, { count: 1, totalTempo: +d.tempo,  totalLoudness: +d.loudness });
+            genreMap.set(d.genre, { count: 1, totalTempo: +d.tempo,  totalValence: +d.valence });
         }
     });
 
@@ -391,7 +385,7 @@ function aggregateData2(data) {
         aggregatedData.push({
             genre: key,
             averageTempo: value.totalTempo / value.count,
-            averageLoudness: value.totalLoudness / value.count 
+            averageValence: value.totalValence / value.count 
         });
     });
     aggregatedData.sort((a, b) => b.averageTempo - a.averageTempo);
