@@ -401,7 +401,7 @@ function aggregateData2(data) {
         .on("click", displaySongs(data));  // When the button is clicked, display the hardcoded songs
 }
 
-function displaySongs(data) {
+async function displaySongs(data) {
     const allSongs = data
     const shuffledSongs = shuffle(allSongs);
     const topSongs = shuffledSongs.slice(0, 10).map(song => song.trackName); // Assuming there's a title property for each song
