@@ -75,17 +75,18 @@ function renderScene1(raw_data) {
     var xAxis = d3.axisBottom(xScale);
     var yAxis = d3.axisLeft(yScale);
 
-    chartGroup.append("text")
+
+    // Draw the axes
+    var chartGroup = svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        chartGroup.append("text")
     .attr("transform", "rotate(-90)")  // To rotate the text and make it vertical
     .attr("y", -50) 
     .attr("x", -chartHeight / 2)  
     .attr("dy", "-3em")  
     .style("text-anchor", "middle")
     .text("Energy");
-
-    // Draw the axes
-    var chartGroup = svg.append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     chartGroup.append("g")
         .attr("transform", "translate(0," + chartHeight + ")")
@@ -200,7 +201,7 @@ async function loadData() {
 
  function addParagraphForScene(sceneIndex) {
     const container = document.getElementById('slide-container'); // assuming you have a div with id "sceneContainer" where you want to append the paragraph
-   
+    container.innerHTML = ''; 
     let paragraphContent;
     switch (sceneIndex) {
         case 0:
