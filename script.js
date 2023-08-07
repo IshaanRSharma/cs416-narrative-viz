@@ -80,13 +80,13 @@ function renderScene1(raw_data) {
     var chartGroup = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    //     chartGroup.append("text")
-    // .attr("transform", "rotate(-90)")  // To rotate the text and make it vertical
-    // .attr("y", -50) 
-    // .attr("x", -chartHeight / 2)  
-    // .attr("dy", "-3em")  
-    // .style("text-anchor", "middle")
-    // .text("Energy");
+        chartGroup.append("text")
+    .attr("transform", "rotate(-90)")  // To rotate the text and make it vertical
+    .attr("y", -50) 
+    .attr("x", -chartHeight / 2)  
+    .attr("dy", "-3em")  
+    .style("text-anchor", "middle")
+    .text("Energy");
 
     chartGroup.append("g")
         .attr("transform", "translate(0," + chartHeight + ")")
@@ -153,30 +153,30 @@ function renderScene1(raw_data) {
         .attr("class", "annotation-group")
         .call(makeAnnotations);
     
-//     let maxEnergyData = aggregatedData.reduce((max, curr) => (curr.averageEnergy > max.averageEnergy ? curr : max), {averageEnergy: -Infinity});
-//     const annotations2 = [{
-//         type: "point",
-//         note: {
-//             title: "Max Energy Genre",
-//             label: "You can see that this genre has the most energy. Maybe a bit too much for a family reunion party."
-//         },
-//         x: xScale(maxEnergyData.genre) + xScale.bandwidth() / 2,
-//         y: yScale(maxEnergyData.averageEnergy),
-//         dy: -50,
-//         dx: 50
-//     }];
+    let maxEnergyData = aggregatedData.reduce((max, curr) => (curr.averageEnergy > max.averageEnergy ? curr : max), {averageEnergy: -Infinity});
+    const annotations2 = [{
+        type: "point",
+        note: {
+            title: "Max Energy Genre",
+            label: "You can see that this genre has the most energy. Maybe a bit too much for a family reunion party."
+        },
+        x: xScale(maxEnergyData.genre) + xScale.bandwidth() / 2,
+        y: yScale(maxEnergyData.averageEnergy),
+        dy: -50,
+        dx: 50
+    }];
 
-//     const makeAnnotations2 = d3.annotation()
-//     .type(d3.annotationLabel)
-//     .annotations(annotations2);
+    const makeAnnotations2 = d3.annotation()
+    .type(d3.annotationLabel)
+    .annotations(annotations2);
 
-// chartGroup.append("g")
-//     .attr("class", "annotation-group")
-//     .call(makeAnnotations2);
+chartGroup.append("g")
+    .attr("class", "annotation-group")
+    .call(makeAnnotations2);
 }
 
   
-function renderScene2(data) {
+function renderScene2(raw_data) {
     clearScene();
     var aggregatedData = aggregateData2(raw_data);
     var svg = d3.select("svg"),
@@ -205,13 +205,13 @@ function renderScene2(data) {
     var chartGroup = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    //     chartGroup.append("text")
-    // .attr("transform", "rotate(-90)")  // To rotate the text and make it vertical
-    // .attr("y", -50) 
-    // .attr("x", -chartHeight / 2)  
-    // .attr("dy", "-3em")  
-    // .style("text-anchor", "middle")
-    // .text("Energy");
+        chartGroup.append("text")
+    .attr("transform", "rotate(-90)")  // To rotate the text and make it vertical
+    .attr("y", -50) 
+    .attr("x", -chartHeight / 2)  
+    .attr("dy", "-3em")  
+    .style("text-anchor", "middle")
+    .text("Tempo");
 
     chartGroup.append("g")
         .attr("transform", "translate(0," + chartHeight + ")")
@@ -278,26 +278,26 @@ function renderScene2(data) {
         .attr("class", "annotation-group")
         .call(makeAnnotations);
     
-    // let maxEnergyData = aggregatedData.reduce((max, curr) => (curr.averageEnergy > max.averageEnergy ? curr : max), {averageEnergy: -Infinity});
-    // const annotations2 = [{
-    //     type: "point",
-    //     note: {
-    //         title: "Max Energy Genre",
-    //         label: "You can see that this genre has the most energy. Maybe a bit too much for a family reunion party."
-    //     },
-    //     x: xScale(maxEnergyData.genre) + xScale.bandwidth() / 2,
-    //     y: yScale(maxEnergyData.averageEnergy),
-    //     dy: -50,
-    //     dx: 50
-    // }];
+    let maxTempoData = aggregatedData.reduce((max, curr) => (curr.averageTempo > max.averageTempo ? curr : max), {averageTempo: -Infinity});
+    const annotations2 = [{
+        type: "point",
+        note: {
+            title: "Max Tempo Genre",
+            label: "You can see that this genre has the fastest tempo. This is a fast song, this will be a fun party."
+        },
+        x: xScale(maxTempoData.genre) + xScale.bandwidth() / 2,
+        y: yScale(maxTempoData.averageTempo),
+        dy: -50,
+        dx: 50
+    }];
 
-    // const makeAnnotations2 = d3.annotation()
-    // .type(d3.annotationLabel)
-    // .annotations(annotations2);
+    const makeAnnotations2 = d3.annotation()
+    .type(d3.annotationLabel)
+    .annotations(annotations2);
 
-// chartGroup.append("g")
-//     .attr("class", "annotation-group")
-//     .call(makeAnnotations2);
+chartGroup.append("g")
+    .attr("class", "annotation-group")
+    .call(makeAnnotations2);
   
   }
   
