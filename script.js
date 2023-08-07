@@ -252,8 +252,15 @@ function renderScene2(raw_data) {
         y: yScale(maxValenceData.averageValence),
         dy: -50,
         dx: 50
-    }];
+    }].on("mouseout", function(d) {
+        d3.select(this)
+        .attr("r", 5)
+        .style("fill", "#0077b6");
+
+    // Remove tooltip
     d3.select("#tooltip").remove();
+    });
+   
 
     const makeAnnotations = annotation()
         .annotations(annotations);
