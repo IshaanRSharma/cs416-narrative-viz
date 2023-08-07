@@ -5,7 +5,7 @@ const scenes = [renderScene1, renderScene2, renderScene3];
 
 window.onload = renderScene;
 
-
+document.getElementById('previous').style.display = 'none'; 
 
 document.getElementById('next').addEventListener('click', function() {
     if (currentScene === scenes.length - 1) {
