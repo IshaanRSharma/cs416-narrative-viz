@@ -52,19 +52,40 @@ function renderScene() {
 }
 
 function preprocessData(rawData) {
+    // Filter out rows with NaN values
     const filteredData = rawData.filter(d => !isNaN(d.Diabetes_012) && !isNaN(d.Sex) && !isNaN(d.Age));
-    const groupedData = d3.rollups(
-        filteredData, 
-        v => v.length, 
-        d => d.Age, 
-        d => d.Sex, 
-        d => d.Diabetes_012
-    );
-    console.log(groupedData)
-    return groupedData;
+
+    const ageBins = ["0-20", "20-40", "40-60", "60-80", "80-100"];
+
+    // Initialize an empty data structure for our age bins and sexes
+    let data = {};
+    ageBins.forEach(bin => {
+        data[bin] = { 'Male': { 'Diabetic': 0, 'Non-Diabetic': 0 }, 'Female': { 'Diabetic': 0, 'Non-Diabetic': 0 } };
+    });
+
+    // Populate the data structure
+    filteredData.forEach(d => {
+        const age = +d.Age;
+        let bin = null;
+
+        if (age <= 20) bin = "0-20";
+        else if (age <= 40) bin = "20-40";
+        else if (age <= 60) bin = "40-60";
+        else if (age <= 80) bin = "60-80";
+        else bin = "80-100";
+
+        if (+d.Diabetes_012 === 1) {
+            data[bin][d.Sex]['Diabetic']++;
+        } else {
+            data[bin][d.Sex]['Non-Diabetic']++;
+        }
+    });
+
+    return data;
 }
+
+
 function renderScene1(raw_data) {
-    const data = preprocessData(raw_data);
     const svg = d3.select("#slide-container svg");
 
     const width = 800;
@@ -93,42 +114,57 @@ function renderScene1(raw_data) {
         .attr("transform", `translate(${margin.left},0)`)
         .call(d3.axisLeft(yScale));
 
-    svg.selectAll(".barGroup")
-        .data(data)
-        .join("g")
-        .attr("class", "barGroup")
-        .attr("transform", d => `translate(${xScale(d[0])},0)`)
-        .selectAll("rect")
-        .data(d => d[1])
-        .join("rect")
-        .attr("width", xScale.bandwidth())
-        .attr("y", d => yScale(d[1]))
-        .attr("height", d => height - margin.bottom - yScale(d[1]))
-        .attr("fill", d => colorScale(d[0]));
+    const processedData = preprocessData(raw_data);
+    const data = [];
 
-        const tooltip = d3.select("#tooltip");
-        svg.selectAll(".barGroup rect")
-        .on("mouseover", function(event, d) {
-            d3.select(this).attr("opacity", 0.7);
+    for (const [age, sexes] of Object.entries(processedData)) {
+        for (const [sex, diabeticStatus] of Object.entries(sexes)) {
+            data.push({
+                age: age,
+                sex: sex,
+                count: diabeticStatus['Diabetic'],
+                type: 'Diabetic'
+            });
+            data.push({
+                age: age,
+                sex: sex,
+                count: diabeticStatus['Non-Diabetic'],
+                type: 'Non-Diabetic'
+            });
+        }
+    }
 
-            const ageGroup = d[0];
-            const sex = d[1][0];
-            const count = d[1][1];
-            const totalCount = d3.sum(rawData, row => +row.Age === ageGroup && row.Sex === sex);
-            const percentage = (count / totalCount) * 100;
+    svg.selectAll(".bar")
+    .data(data)
+    .join("rect")
+    .attr("class", "bar")
+    .attr("x", d => xScale(d.age))
+    .attr("y", d => yScale(d.count))
+    .attr("width", xScale.bandwidth())
+    .attr("height", d => height - margin.bottom - yScale(d.count))
+    .attr("fill", d => colorScale(d.sex));
 
-            tooltip.html(`Age: ${ageGroup}<br>Sex: ${sex}<br>Percentage: ${percentage.toFixed(2)}%`)
-                .style("left", (event.pageX + 10) + "px")
-                .style("top", (event.pageY - 28) + "px")
-                .style("visibility", "visible")
-                .style("background-color", "white")
-                .style("padding", "5px")
-                .style("border", "1px solid black");
-        })
-        .on("mouseout", function(event, d) {
-            d3.select(this).attr("opacity", 1);
-            tooltip.style("visibility", "hidden");
-        });
+// Tooltip behavior
+const tooltip = d3.select("#tooltip");
+svg.selectAll(".bar")
+    .on("mouseover", function(event, d) {
+        d3.select(this).attr("opacity", 0.7);
+
+        const totalCount = rawData.filter(row => row.Age === d.age && row.Sex === d.sex).length;
+        const percentage = (d.count / totalCount) * 100;
+
+        tooltip.html(`Age: ${d.age}<br>Sex: ${d.sex}<br>Percentage: ${percentage.toFixed(2)}%`)
+            .style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 28) + "px")
+            .style("visibility", "visible")
+            .style("background-color", "white")
+            .style("padding", "5px")
+            .style("border", "1px solid black");
+    })
+    .on("mouseout", function(event, d) {
+        d3.select(this).attr("opacity", 1);
+        tooltip.style("visibility", "hidden");
+    });
 }
 
 function renderScene2(data) {
@@ -162,6 +198,7 @@ function printAges() {
 
 async function loadData() {
     const data = await d3.csv("Data/data.csv");
+    console.log(data['age'])
     return data;
 }
 
