@@ -250,9 +250,10 @@ function renderScene2(raw_data) {
                     dx: 50
                 }];
             
-                chartGroup.append("g")
+                chartGroup.select("").append("g")
                    .attr("class", "valence-annotation")
                    .call(d3.annotation().annotations(annotations));
+                   console.log(annotations)
             }
 
         if (d === maxTempoData) {
