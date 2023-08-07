@@ -173,7 +173,7 @@ function renderScene1(raw_data) {
 // chartGroup.append("g")
 //     .attr("class", "annotation-group")
 //     .call(makeAnnotations2);
-// }
+}
 
   
 function renderScene2(data) {
@@ -397,4 +397,3 @@ function aggregateData2(data) {
     aggregatedData.sort((a, b) => b.averageTempo - a.averageTempo);
     return aggregatedData.slice(0, 30);
  }
-}
