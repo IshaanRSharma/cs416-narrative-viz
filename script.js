@@ -229,7 +229,7 @@ function renderScene2(raw_data) {
         chartGroup.append("text")
             .attr("id", "tooltip")
             .attr("x", xScale(d.genre) + xScale.bandwidth() / 2)  // Center the tooltip text within the band
-            .attr("y", yScale(d.averageEnergy) - 15)
+            .attr("y", yScale(d.averageTempo) - 15)
             .attr("text-anchor", "middle")
             .attr("font-family", "sans-serif")
             .attr("font-size", "11px")
