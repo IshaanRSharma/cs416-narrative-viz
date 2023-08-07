@@ -307,10 +307,6 @@ function renderScene2(raw_data) {
         // Remove tooltip
         d3.select("#tooltip").remove();
 
-    chartGroup.append("g")
-        .attr("class", "annotation-group3")
-        .call(makeAnnotations2);
-
 
             // Add annotation
     const annotations = [{
