@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <h1 id="pageTitle">What Genres of Music Are Best For Your Next Party?</h1>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/d3-simple-slider/dist/d3-simple-slider.css">
 </head>
 <body>
     <p id="explanation">
@@ -21,29 +22,12 @@
     <div id="text-container">
     </div>
 
-    <div id="controls">
-        <label for="danceabilitySlider">Danceability:</label>
-        <input type="range" id="danceabilitySlider" min="0" max="1" step="0.01" value="0.5">
 
-        <label for="energySlider">Energy:</label>
-        <input type="range" id="energySlider" min="0" max="1" step="0.01" value="0.5">
-
-        <label for="loudnessSlider">Loudness:</label>
-        <input type="range" id="loudnessSlider" min="-60" max="0" step="1" value="-30">
-
-        <label for="tempoSlider">Tempo:</label>
-        <input type="range" id="tempoSlider" min="50" max="200" step="1" value="120">
-
-        <button id="generateButton">Generate Playlist</button>
-    </div>
-    
-    <div id="playlist-container">
-
-    </div>
     <div id="tooltip" style="position: absolute; visibility: hidden;"></div>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="script.js"></script>
     <script src="https://d3js.org/d3-fetch.v3.min.js"></script>
     <script src="https://unpkg.com/d3-svg-annotation@2"></script>
+    <script src="https://unpkg.com/d3-simple-slider"></script>  
 </body>
 </html>

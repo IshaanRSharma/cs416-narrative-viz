@@ -253,7 +253,8 @@ function renderScene2(raw_data) {
             .attr("fill", "black")
             .text(`Valence: ${d.averageValence}`);
         
-if (d.averageValence === maxValenceData.genre) {
+        if (d.averageValence === maxValenceData.genre) {
+            console.log("made it")
     console.log(d);
     const annotations = [{
         note: {
@@ -299,17 +300,16 @@ if (d.averageValence === maxValenceData.genre) {
             .style("fill", "#0077b6");
     
             // Remove tooltip
-            // d3.select("#tooltip").remove();
+            d3.select("#tooltip").remove();
             
-            if (d === maxValenceData) {
+            if (d.averageValence === maxValenceData) {
                 chartGroup.select(".valence-annotation").remove();
             }
-            if (d === maxTempoData) {
+            if (d.averageTempo === maxTempoData) {
                 chartGroup.select(".tempo-annotation").remove();
             }
         });
-        // Remove tooltip
-        d3.select("#tooltip").remove();
+
 
 
             // Add annotation
