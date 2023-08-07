@@ -238,7 +238,7 @@ function renderScene2(raw_data) {
         
         if (d === maxValenceData) {
             // Show valence annotation
-            chartGroup.append("g")
+            svg.append("g")
                 .attr("class", "valence-annotation")
                 .call(d3.annotation().annotations([{
                     type: "point",
@@ -255,7 +255,7 @@ function renderScene2(raw_data) {
 
         if (d === maxTempoData) {
             // Show tempo annotation
-            chartGroup.append("g")
+            svg.append("g")
                 .attr("class", "tempo-annotation")
                 .call(d3.annotation().annotations([{
                     type: "point",
