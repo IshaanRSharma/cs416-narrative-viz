@@ -273,6 +273,7 @@ if (d.averageValence === maxValenceData.genre) {
         .call(makeAnnotations);
 
     console.log(annotations);  
+}
 
         if (d === maxTempoData) {
             // Show tempo annotation
