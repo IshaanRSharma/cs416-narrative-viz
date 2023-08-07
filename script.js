@@ -256,7 +256,6 @@ function renderScene2(raw_data) {
 if (d.averageValence === maxValenceData.genre) {
     console.log(d);
     const annotations = [{
-        type: annotationLabel,
         note: {
             title: "Max Valence Genre",
             label: "This genre has the highest valence."
@@ -268,7 +267,6 @@ if (d.averageValence === maxValenceData.genre) {
     }];
 
     const makeAnnotations = annotation()
-        .type(annotationLabel)
         .annotations(annotations);
 
     chartGroup.append("g")
