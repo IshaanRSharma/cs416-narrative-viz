@@ -262,20 +262,7 @@ function renderScene2(raw_data) {
         // Remove tooltip
         d3.select("#tooltip").remove();
         });
-
-            // Add annotation
-         const annotations = [{
-        note: {
-            label: "Hover over each point to see the genre's average valence.",
-            title: "Note"
-        },
-        x: width / 2,
-        y: margin.top / 2,
-        dy: 0,
-        dx: 0   
-    }];
-
-    const makeAnnotations = d3.annotation()
+        const makeAnnotations = d3.annotation()
         .annotations(annotations);
     
         let maxTempoData = aggregatedData.reduce((max, curr) => (curr.averageTempo > max.averageTempo ? curr : max), {averageTempo: -Infinity});
@@ -299,6 +286,18 @@ function renderScene2(raw_data) {
         .attr("class", "annotation-group")
         .call(makeAnnotations2);
 
+
+            // Add annotation
+         const annotations = [{
+        note: {
+            label: "Hover over each point to see the genre's average valence.",
+            title: "Note"
+        },
+        x: width / 2,
+        y: margin.top / 2,
+        dy: 0,
+        dx: 0   
+    }];
 
     svg.append("g")
         .attr("class", "annotation-group")
