@@ -57,10 +57,10 @@ function renderScene1(raw_data) {
         width = +svg.attr("width"),
         height = +svg.attr("height");
 
-        var xScale = d3.scaleBand()
-        .domain(aggregatedData.map(d => d.genre))
-        .range([50, width - 50])
-        .padding(0.5);
+     var xScale = d3.scaleBand()
+    .domain(aggregatedData.map(d => d.genre))
+    .range([50, width - 50])
+    .padding(0.5);
 
     var yScale = d3.scaleLinear()
         .domain([0, d3.max(aggregatedData, d => +d.energy)])
@@ -74,27 +74,34 @@ function renderScene1(raw_data) {
         .attr("transform", "translate(0," + (height - 50) + ")")
         .call(xAxis);
 
+    svg.selectAll(".tick text")
+        .attr("transform", "rotate(-45)")  // Rotates text by 45 degrees
+        .style("text-anchor", "end")
+        .attr("dx", "-0.5em")
+        .attr("dy", "0.5em");
+
     svg.append("g")
         .attr("transform", "translate(50,0)")
         .call(yAxis);
 
-        var bars = svg.selectAll("rect")
-        .data(aggregatedData)
-        .enter().append("rect")
-        .attr("x", d => xScale(d.genre))
-        .attr("y", d => yScale(d.averageEnergy))
-        .attr("width", xScale.bandwidth())
-        .attr("height", d => height - 50 - yScale(d.averageEnergy))
+    // Draw the scatterplot
+    var circles = svg.selectAll("circle")
+        .data(raw_data)
+        .enter().append("circle")
+        .attr("cx", d => xScale(d.genre))
+        .attr("cy", d => yScale(+d.energy))
+        .attr("r", 5)
         .style("fill", "#0077b6")
         .on("mouseover", function(event, d) {
             d3.select(this)
+                .attr("r", 7)
                 .style("fill", "#ff5733");
-    
+
             // Add tooltip
             svg.append("text")
                 .attr("id", "tooltip")
-                .attr("x", xScale(d.genre) + xScale.bandwidth() / 2)
-                .attr("y", yScale(d.averageEnergy) - 15)
+                .attr("x", xScale(d.genre))
+                .attr("y", yScale(+d.energy) - 15)
                 .attr("text-anchor", "middle")
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "11px")
@@ -104,11 +111,13 @@ function renderScene1(raw_data) {
         })
         .on("mouseout", function(d) {
             d3.select(this)
+                .attr("r", 5)
                 .style("fill", "#0077b6");
-    
+
             // Remove tooltip
             d3.select("#tooltip").remove();
         });
+
     // Add annotation
     const annotations = [{
         note: {
