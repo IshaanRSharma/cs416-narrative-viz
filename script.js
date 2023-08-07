@@ -51,65 +51,57 @@ function renderScene() {
 
 }
 
-function preprocessData(rawData) {
-    // Filter out invalid entries
-    const validData = rawData.filter(d => !isNaN(d.Diabetes_012) && d.Sex);
-    
-    // Group by sex and diabetes status
-    const grouped = d3.group(validData, d => d.Sex, d => d.Diabetes_012);
-    
-    // Transform data for chart
-    const data = [];
-    for (let [sex, diabetesMap] of grouped.entries()) {
-        for (let [status, individuals] of diabetesMap.entries()) {
-            const type = (status === 1 || status === 2) ? 'Diabetic' : 'Non-Diabetic';
-            data.push({sex, type, count: individuals.length});
-        }
-    }
-    return data;
-}
 
 
 function renderScene1(raw_data) {
-    const data = preprocessData(raw_data);
-    const svg = d3.select("#slide-container svg");
-    const width = 800;
-    const height = 400;
-    const margin = {top: 20, right: 20, bottom: 40, left: 50};
+    const margin = { top: 30, right: 30, bottom: 70, left: 60 };
+const width = 600 - margin.left - margin.right;
+const height = 400 - margin.top - margin.bottom;
 
-    const xScale = d3.scaleBand()
-        .domain(data.map(d => d.sex))
-        .range([margin.left, width - margin.right])
-        .padding(0.5);
+// Append the SVG object to the chart div
+const svg = d3.select("#chart")
+  .append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    const yScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.count)])
-        .range([height - margin.bottom, margin.top]);
+// X-axis scale
+const x = d3.scaleBand()
+  .range([0, width])
+  .domain(data.map(d => d.Sex))
+  .padding(0.2);
 
-    const colorScale = d3.scaleOrdinal()
-        .domain(['Diabetic', 'Non-Diabetic'])
-        .range(['#d62728', '#2ca02c']);  // Red for Diabetic, Green for Non-Diabetic
+// Y-axis scale
+const y = d3.scaleLinear()
+  .domain([0, d3.max(data, d => d.Diabetes_012)])
+  .range([height, 0]);
 
-    // Create bars
-    svg.selectAll(".bar")
-        .data(data)
-        .join("rect")
-        .attr("class", "bar")
-        .attr("x", d => xScale(d.sex))
-        .attr("y", d => yScale(d.count))
-        .attr("width", xScale.bandwidth() / 2)
-        .attr("height", d => height - margin.bottom - yScale(d.count))
-        .attr("fill", d => colorScale(d.type))
-        .attr("transform", d => `translate(${d.type === 'Diabetic' ? 0 : xScale.bandwidth() / 2},0)`);
+// X-axis
+svg.append("g")
+  .attr("transform", "translate(0," + height + ")")
+  .call(d3.axisBottom(x));
 
-    // Axes
-    svg.append("g")
-        .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(xScale).tickSizeOuter(0));
+// Y-axis
+svg.append("g")
+  .call(d3.axisLeft(y));
 
-    svg.append("g")
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(yScale));
+// Bars
+svg.selectAll(".bar")
+  .data(data)
+  .enter().append("rect")
+  .attr("class", "bar")
+  .attr("x", d => x(d.Sex))
+  .attr("y", d => y(d.Diabetes_012))
+  .attr("width", x.bandwidth())
+  .attr("height", d => height - y(d.Diabetes_012));
+
+// Add chart title
+svg.append("text")
+  .attr("x", width / 2)
+  .attr("y", 0 - (margin.top / 2))
+  .attr("text-anchor", "middle")
+  .text("Diabetes Status and Sex Bar Chart");
 }
 
 function renderScene2(data) {
