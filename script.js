@@ -55,22 +55,6 @@ function renderScene() {
     });
    addParagraphForScene(currentScene)
 
-   if (currentScene === 2) { // If on scene 3 (index starts from 0)
-    // Show sliders and buttons
-    document.getElementById('danceabilitySlider').style.display = 'block';
-    document.getElementById('energySlider').style.display = 'block';
-    document.getElementById('loudnessSlider').style.display = 'block';
-    document.getElementById('tempoSlider').style.display = 'block';
-    document.getElementById('generateButton').style.display = 'block';
-} else {
-    // Hide sliders and buttons
-    document.getElementById('danceabilitySlider').style.display = 'none';
-    document.getElementById('energySlider').style.display = 'none';
-    document.getElementById('loudnessSlider').style.display = 'none';
-    document.getElementById('tempoSlider').style.display = 'none';
-    document.getElementById('generateButton').style.display = 'none';
-}
-
 }
 
 function renderScene1(raw_data) {
