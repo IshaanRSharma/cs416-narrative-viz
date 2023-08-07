@@ -379,55 +379,54 @@ function aggregateData2(data) {
     return aggregatedData.slice(0, 30);
  }
 
- function renderScene3(songs) {
-    const sliders = ["valence", "danceability", "energy", "tempo"].map(attribute => {
+ function renderScene3() {
+    const attributes = ["valence", "danceability", "energy", "tempo"];
+
+    // Append text input boxes
+    attributes.forEach(attribute => {
         const div = d3.select("body").append("div");
         
-        const slider = d3.sliderHorizontal()
-          .domain([0, 1])  // adjust if necessary, e.g., for tempo
-          .width(300)
-          .displayValue(false)
-          .on('end', () => filterSongs(songs, sliders));  // pass songs and sliders to filterSongs
+        div.append("span")
+            .text(`${attribute.charAt(0).toUpperCase() + attribute.slice(1)}: `);  // Capitalize attribute name
 
-        div.append("svg")
-          .attr("width", 500)
-          .attr("height", 100)
-          .append("g")
-          .attr("transform", "translate(30,30)")
-          .call(slider);
-        
-        return { attribute, slider };
-    });
-}
-
-function filterSongs(songs, sliders) {
-    const filteredSongs = songs.filter(song => {
-        return sliders.every(s => {
-            if (s.attribute === "tempo") {
-                return song[s.attribute] > 50 && song[s.attribute] < 200;  // adjust as necessary
-            }
-            return song[s.attribute] > s.slider.value();
-        });
+        div.append("input")
+            .attr("type", "text")
+            .attr("id", `${attribute}-input`)
+            .attr("placeholder", `Enter ${attribute} value`);
     });
 
-    // Displaying the top 10 songs
-    displaySongs(filteredSongs.slice(0, 10));
+    // Button to trigger song filtering/display (this could be done differently)
+    d3.select("body").append("button")
+        .text("Show Top 10 Songs")
+        .on("click", displaySongs);  // When the button is clicked, display the hardcoded songs
 }
 
-function displaySongs(topSongs) {
+function displaySongs() {
+    const topSongs = [
+        "Song 1",
+        "Song 2",
+        "Song 3",
+        "Song 4",
+        "Song 5",
+        "Song 6",
+        "Song 7",
+        "Song 8",
+        "Song 9",
+        "Song 10"
+    ];
+
     const songContainer = d3.select("#song-list");
 
     // Clear previous songs
     songContainer.html("");
 
     const songList = songContainer.selectAll(".song")
-        .data(topSongs, d => d.title);
+        .data(topSongs);
 
     // Enter new songs
     songList.enter().append("div")
         .attr("class", "song")
-        .text(d => d.title);
+        .text(d => d);
 
-    // Exit songs not in the top 10 anymore
-    songList.exit().remove();
+    // Since these are hardcoded, there won't be any songs exiting, but if needed, the exit code would go here
 }
