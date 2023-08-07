@@ -52,17 +52,18 @@ function renderScene() {
 }
 
 function renderScene1(raw_data) {
+    var aggregatedData = aggregateData(raw_data);
     var svg = d3.select("svg"),
         width = +svg.attr("width"),
         height = +svg.attr("height");
 
     var xScale = d3.scalePoint()
-        .domain(raw_data.map(d => d.genre))
-        .range([50, width - 50])
+        .domain(aggregatedData.map(d => d.genre))
+        .range([20, width - 20])
         .padding(0.5);
 
     var yScale = d3.scaleLinear()
-        .domain([0, d3.max(raw_data, d => +d.energy)])
+        .domain([0, d3.max(aggregatedData, d => +d.energy)])
         .range([height - 50, 50]);
 
     var xAxis = d3.axisBottom(xScale);
@@ -177,4 +178,29 @@ async function loadData() {
         paragraph.textContent = paragraphContent;
         container.appendChild(paragraph);
     }
+}
+
+function aggregateData(data) {
+    let genreMap = new Map();
+
+    data.forEach(d => {
+        if (genreMap.has(d.genre)) {
+            let current = genreMap.get(d.genre);
+            current.count += 1;
+            current.totalEnergy += +d.energy;
+            genreMap.set(d.genre, current);
+        } else {
+            genreMap.set(d.genre, { count: 1, totalEnergy: +d.energy });
+        }
+    });
+
+    let aggregatedData = [];
+    genreMap.forEach((value, key) => {
+        aggregatedData.push({
+            genre: key,
+            averageEnergy: value.totalEnergy / value.count
+        });
+    });
+
+    return aggregatedData;
 }
