@@ -57,65 +57,52 @@ function renderScene1(raw_data) {
         width = +svg.attr("width"),
         height = +svg.attr("height");
 
-     var xScale = d3.scaleBand()
-    .domain(aggregatedData.map(d => d.genre))
-    .range([50, width - 50])
-    .padding(0.5);
+    // Define margins for the SVG
+    var margin = { top: 50, right: 30, bottom: 100, left: 50 },
+        chartWidth = width - margin.left - margin.right,
+        chartHeight = height - margin.top - margin.bottom;
+
+    var xScale = d3.scaleBand()
+        .domain(aggregatedData.map(d => d.genre))
+        .range([0, chartWidth])
+        .padding(0.5);
 
     var yScale = d3.scaleLinear()
-        .domain([0, d3.max(aggregatedData, d => +d.energy)])
-        .range([height - 50, 50]);
+        .domain([0, d3.max(aggregatedData, d => d.averageEnergy)])
+        .range([chartHeight, 0]);
 
     var xAxis = d3.axisBottom(xScale);
     var yAxis = d3.axisLeft(yScale);
 
     // Draw the axes
-    svg.append("g")
-        .attr("transform", "translate(0," + (height - 50) + ")")
-        .call(xAxis);
+    var chartGroup = svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    svg.selectAll(".tick text")
+    chartGroup.append("g")
+        .attr("transform", "translate(0," + chartHeight + ")")
+        .call(xAxis)
+        .selectAll(".tick text")
         .attr("transform", "rotate(-45)")  // Rotates text by 45 degrees
         .style("text-anchor", "end")
         .attr("dx", "-0.5em")
         .attr("dy", "0.5em");
 
-    svg.append("g")
-        .attr("transform", "translate(50,0)")
+    chartGroup.append("g")
         .call(yAxis);
 
     // Draw the scatterplot
-    var circles = svg.selectAll("circle")
-        .data(raw_data)
+    var circles = chartGroup.selectAll("circle")
+        .data(aggregatedData)
         .enter().append("circle")
-        .attr("cx", d => xScale(d.genre))
-        .attr("cy", d => yScale(+d.energy))
+        .attr("cx", d => xScale(d.genre) + xScale.bandwidth() / 2)  // Align with center of band
+        .attr("cy", d => yScale(d.averageEnergy))
         .attr("r", 5)
         .style("fill", "#0077b6")
         .on("mouseover", function(event, d) {
-            d3.select(this)
-                .attr("r", 7)
-                .style("fill", "#ff5733");
-
-            // Add tooltip
-            svg.append("text")
-                .attr("id", "tooltip")
-                .attr("x", xScale(d.genre))
-                .attr("y", yScale(+d.energy) - 15)
-                .attr("text-anchor", "middle")
-                .attr("font-family", "sans-serif")
-                .attr("font-size", "11px")
-                .attr("font-weight", "bold")
-                .attr("fill", "black")
-                .text(`Danceability: ${d.danceability}`);
+            //... (rest remains the same)
         })
         .on("mouseout", function(d) {
-            d3.select(this)
-                .attr("r", 5)
-                .style("fill", "#0077b6");
-
-            // Remove tooltip
-            d3.select("#tooltip").remove();
+            //... (rest remains the same)
         });
 
     // Add annotation
@@ -125,7 +112,7 @@ function renderScene1(raw_data) {
             title: "Note"
         },
         x: width / 2,
-        y: 30,
+        y: margin.top / 2,
         dy: 0,
         dx: 0
     }];
@@ -137,7 +124,9 @@ function renderScene1(raw_data) {
         .attr("class", "annotation-group")
         .call(makeAnnotations);
 }
-  function renderScene2(data) {
+
+  
+function renderScene2(data) {
     clearScene();
   
    
@@ -207,6 +196,6 @@ function aggregateData(data) {
             averageEnergy: value.totalEnergy / value.count
         });
     });
-
-    return aggregatedData;
+    aggregatedData.sort((a, b) => b.averageEnergy - a.averageEnergy);
+    return aggregatedData.slice(0, 20);
 }
