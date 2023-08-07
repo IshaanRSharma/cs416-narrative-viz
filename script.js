@@ -277,7 +277,6 @@ function renderScene2(raw_data) {
         }];
     
         const makeAnnotations2 = d3.annotation()
-        .type(d3.annotationLabel)
         .annotations(annotations2);
     
     chartGroup.append("g")
