@@ -51,6 +51,9 @@ function clearScene() {
 }
 
 function renderScene() {
+    if (currentScene === 1 || currentScene === 0) { // assuming scene3 is the third scene, you can adjust this
+        clearScene3Content();
+    }
     clearScene();
     loadData().then(data => {
         scenes[currentScene](data);
@@ -361,11 +364,12 @@ function aggregateData2(data) {
  }
 
  function renderScene3(data) {
+    const container = d3.select("#scene3-container");
     const attributes = ["valence", "danceability", "energy", "tempo"];
 
-    // Append text input boxes
+    // Append text input boxes to the scene3-container
     attributes.forEach(attribute => {
-        const div = d3.select("body").append("div");
+        const div = container.append("div");
         
         div.append("span")
             .text(`${attribute.charAt(0).toUpperCase() + attribute.slice(1)}: `);  // Capitalize attribute name
@@ -377,11 +381,11 @@ function aggregateData2(data) {
     });
 
     // Button to trigger song filtering/display
-    d3.select("body").append("button")
+    container.append("button")
         .text("Show Top 10 Songs")
-        .on("click", function() { 
-            displaySongs(data);
-        });  // Generate new songs and display them on button click
+        .on("click", () => displaySongs(data));
+    
+    container.append("div").attr("id", "songs-container");
 }
 
 function displaySongs(data) {
@@ -389,7 +393,7 @@ function displaySongs(data) {
     const shuffledSongs = shuffle(allSongs);
     const topSongs = shuffledSongs.slice(0, 10).map(song => song.trackName); 
 
-    const songContainer = d3.select("#song-list");
+    const songContainer = d3.select("#songs-container");
 
     // Clear previous songs
     songContainer.html("");
@@ -413,8 +417,5 @@ function shuffle(array) {
 
 function clearScene3Content() {
     // Remove songs, input boxes, labels, and the Show Songs button
-    d3.select("#song-list").html("");
-    d3.selectAll("input").remove();
-    d3.selectAll("span").remove();
-    d3.selectAll("button").remove();
+    d3.select("#scene3-container").html("");
 }
