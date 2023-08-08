@@ -8,7 +8,7 @@ window.onload = renderScene;
 document.getElementById('previous').style.display = 'none'; 
 
 document.getElementById('next').addEventListener('click', function() {
-   //  clearScene3Content()
+    clearScene3Content() 
     if (currentScene === scenes.length - 1) {
         document.getElementById('next').style.display = 'none';
         document.getElementById('start-over').style.display = 'inline-block'; 
@@ -23,7 +23,7 @@ document.getElementById('next').addEventListener('click', function() {
 });
 
 document.getElementById('previous').addEventListener('click', function() {
-   //  clearScene3Content()
+    clearScene3Content() 
     if (currentScene === 1) {
         document.getElementById('previous').style.display = 'none';
     }
@@ -37,7 +37,7 @@ document.getElementById('previous').addEventListener('click', function() {
     }
 });
 document.getElementById('start-over').addEventListener('click', function() {
-   //  clearScene3Content()
+    clearScene3Content() 
     currentScene = 0;
     renderScene();
     
@@ -239,20 +239,9 @@ function renderScene2(raw_data) {
             .attr("font-weight", "bold")
             .attr("fill", "black")
             .text(`Valence: ${d.averageValence}`);
-        
-        if (d.averageValence === maxValenceData) {
-            console.log("made it")
-    console.log(d);
-    const annotations = [{
-        note: {
-            title: "Max Valence Genre",
-            label: "This genre has the highest valence."
-        },
-        x: xScale(maxValenceData.genre) + xScale.bandwidth() / 2,
-        y: yScale(maxValenceData.averageValence),
-        dy: -50,
-        dx: 50
-    }].on("mouseout", function(d) {
+
+    // Remove tooltip
+    }) .on("mouseout", function(d) {
         d3.select(this)
         .attr("r", 5)
         .style("fill", "#0077b6");
@@ -261,19 +250,6 @@ function renderScene2(raw_data) {
     d3.select("#tooltip").remove();
     });
    
-
-    const makeAnnotations = annotation()
-        .annotations(annotations);
-
-    chartGroup.append("g")
-        .attr("class", "valence-annotation")
-        .call(makeAnnotations);
-
-    console.log(annotations);  
-}
-});
-
-
 
             // Add annotation
     const annotations = [{
@@ -386,7 +362,6 @@ function aggregateData2(data) {
  }
 
  function renderScene3(data) {
-    const svg = d3.select("#slide-container svg");
     const attributes = ["valence", "danceability", "energy", "tempo"];
 
     // Append text input boxes
@@ -402,16 +377,18 @@ function aggregateData2(data) {
             .attr("placeholder", `Enter ${attribute} value`);
     });
 
-    // Button to trigger song filtering/display (this could be done differently)
+    // Button to trigger song filtering/display
     d3.select("body").append("button")
         .text("Show Top 10 Songs")
-        .on("click", displaySongs(data));  // When the button is clicked, display the hardcoded songs
+        .on("click", function() { 
+            displaySongs(data);
+        });  // Generate new songs and display them on button click
 }
 
-async function displaySongs(data) {
-    const allSongs = data
+function displaySongs(data) {
+    const allSongs = data;
     const shuffledSongs = shuffle(allSongs);
-    const topSongs = shuffledSongs.slice(0, 10).map(song => song.trackName); // Assuming there's a title property for each song
+    const topSongs = shuffledSongs.slice(0, 10).map(song => song.trackName); 
 
     const songContainer = d3.select("#song-list");
 
@@ -426,12 +403,6 @@ async function displaySongs(data) {
         .attr("class", "song")
         .text(d => d);
 }
-function clearScene3Content() {
-    d3.select("#song-list").style("display", "none");
-    d3.selectAll("input").style("display", "none");
-    d3.selectAll("span").style("display", "none");
-    d3.selectAll("button").style("display", "none");
-}
 
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -439,4 +410,12 @@ function shuffle(array) {
         [array[i], array[j]] = [array[j], array[i]];  // Swap elements
     }
     return array;
+}
+
+function clearScene3Content() {
+    // Remove songs, input boxes, labels, and the Show Songs button
+    d3.select("#song-list").html("");
+    d3.selectAll("input").remove();
+    d3.selectAll("span").remove();
+    d3.selectAll("button").remove();
 }
