@@ -8,7 +8,6 @@ window.onload = renderScene;
 document.getElementById('previous').style.display = 'none'; 
 
 document.getElementById('next').addEventListener('click', function() {
-    clearScene3Content() 
     if (currentScene === scenes.length - 1) {
         document.getElementById('next').style.display = 'none';
         document.getElementById('start-over').style.display = 'inline-block'; 
@@ -23,7 +22,7 @@ document.getElementById('next').addEventListener('click', function() {
 });
 
 document.getElementById('previous').addEventListener('click', function() {
-    clearScene3Content() 
+
     if (currentScene === 1) {
         document.getElementById('previous').style.display = 'none';
     }
